@@ -3,43 +3,120 @@
     src: url("../fonts/Winter Brush.otf");
 }
 
-body{
-    margin:0;
+@font-face {
+    font-family: "Source Code Pro";
+    src: url("../fonts/SourceSansPro-Regular.otf");
+}
+
+@font-face {
+    font-family: "Source Code Bold";
+    src: url("../fonts/SourceSansPro-Bold.otf");
+}
+
+body {
+    margin: 0;
     background-color: #e6e6e6;
-    font-family: sans-serif;
+    font-family: "Source Code Pro", sans-serif;
     font-size: 20pt;
-    width:100%;
+    width: 100%;
 }
 
-.container{
-    width:100%;
-
+.container {
+    width: 100%;
 }
 
-.header{
+.headerbox {
+    position: fixed;
+    width: 100%;
+}
+
+.header {
     background-color: #1a1a1a;
     color: #FFF;
     font-family: "WinterBrush", serif;
     text-align: center;
     font-size: 40pt;
-    padding:12px 0;
+    padding: 12px 0;
 }
 
-.searchbar{
+.searchbar {
     background-color: #FFFFFF;
     padding: 2% 5%;
-    height:15%;
+    height: 15%;
 }
 
-.searchbar input[type=text]{
-    width:100%;
-    border-radius:5%;
+.searchbox {
+    width: 100%;
+    height: 40px;
+    border-radius: 20px;
+    border: 1px solid #646464;
+    padding: 0px 20px;
+    box-sizing: border-box;
+
+    font-size: 14pt;
 }
 
-.content{
+.content {
+    padding: 23% 2% 2% 2%;
+    height:100%;
+}
+
+.content-label:first-child {
+    margin-top: 2%;
+}
+
+.content-label {
+    color: #646464;
+    margin-top: 5%;
+}
+
+div[class*=resto-card-] {
+    margin-top: 1%;
+    background-color: #FFF;
     padding: 2% 2%;
+    box-shadow: 3px 3px 0 0 #cccccc;
+    box-sizing: border-box;
 }
 
-.content-label{
-    color:#646464;
+::-webkit-scrollbar {
+    display: none;
+}
+
+.resto-card-small {
+    display: inline-block;
+    width: 35%;
+    height: 100%;
+}
+
+.resto-card-big {
+    width: 100%;
+}
+
+.resto-card-small + .resto-card-small {
+    margin-left: 3%;
+}
+
+.resto-card-big + .resto-card-big {
+    margin-top: 3%;
+}
+
+.resto-name {
+    margin-top: 10px;
+    font-family: "Source Code Bold";
+}
+
+.resto-address {
+    font-size: 12pt;
+}
+
+.resto-pic-wide, .resto-pic-small {
+    width: 100%;
+    height: 200px;
+    background-color: #23b574;
+}
+
+#nearest {
+    overflow-y: auto;
+    overflow-x: scroll;
+    white-space: nowrap;
 }
