@@ -438,12 +438,13 @@ div[class*=progress-][class*=active] > .progress-bubble {
 }
 
 #lokasi-antar{
-    margin-top:3%;
+    margin-top:2%;
     font-size:20pt;
     width: 80%;
     border:0;
     border-bottom: 1px solid #8e8e8e;
     color:#646464;
+    font-family: "Source Code Pro";
 }
 
 #edit:before{
@@ -451,4 +452,44 @@ div[class*=progress-][class*=active] > .progress-bubble {
     color:#23b574;
     content:"\270E";
     font-size:36pt;
+}
+
+.notification-box > button{
+    margin-top:3%;
+    box-sizing: border-box;
+    width:100%;
+    padding: 5% 0;
+    font-size:20pt;
+    font-family: "Source Code Bold";
+    color:#FFFFFF;
+    border: 0;
+    border-radius: 10px;
+    background-color: #23b574;
+}
+
+.notification-box > button:active{
+    background-color: #239c60;
+}
+
+.notification-picture{
+    text-align: center;
+    height:50%;
+}
+
+.notification-text{
+    text-align: center;
+    font-size:40px;
+    font-family:"Source Code Bold";
+}
+
+#notification-token > .notification-box{
+    height:30%;
+}
+
+#notification-token{
+    display: none;
+}
+
+#notification-confirm{
+    display: none;
 }
