@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>E-Warung</title>
+    <link rel="stylesheet" type="text/css" href="css/styles.css">
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        E-Warung
+    </div>
+    <div class="content">
+        <div id="map">
+        </div>
+        <div id="progress">
+            <div class="progress-1-active">
+                <div class="progress-bubble">
+                    1
+                </div>
+                <div class="progress-label">
+                    Pesanan Diterima Penjual
+                </div>
+            </div>
+            <div class="progress-2">
+                <div class="progress-bubble">
+                    2
+                </div>
+                <div class="progress-label">
+                    Pesanan Disiapkan
+                </div>
+            </div>
+            <div class="progress-3">
+                <div class="progress-bubble">
+                    3
+                </div>
+                <div class="progress-label">
+                    Pesanan Diantar
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="bottom-panel">
+        <div class="order-total-sending">
+            <div class="total-label">
+                Total
+            </div>
+            <div class="total-number">
+                230.000
+            </div>
+        </div>
+        <div class="order-cancel">
+            X
+        </div>
+    </div>
+
+    <script>
+        function initMap() {
+            var uluru = {lat: -25.363, lng: 131.044};
+
+            var map = new google.maps.Map(document.getElementById('map'), {
+                zoom: 4,
+                center: uluru
+            });
+        }
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtrJrATfjBw3tNZm-o9xZqBciFBBBSrUc&callback=initMap">
+    </script>
+</div>
+</body>
+</html>

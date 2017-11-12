@@ -13,11 +13,11 @@
     src: url("../fonts/SourceSansPro-Bold.otf");
 }
 
-form{
+form {
     height: 100%;
 }
 
-html, body{
+html, body {
     width: 100%;
     height: 100%;
 }
@@ -47,15 +47,15 @@ body {
 }
 
 .content {
-    padding-top:14%;
+    padding-top: 14%;
     height: 100%;
-    width:100%;
+    width: 100%;
     box-sizing: border-box;
 }
 
-.card-content{
+.card-content {
     padding: 2%;
-    height:70%;
+    height: 70%;
 }
 
 .searchbar {
@@ -118,11 +118,11 @@ div[class*=resto-card-] {
     font-family: "Source Code Bold";
 }
 
-.resto-address, .menu-price{
-    font-size: 12pt;
+.resto-address, .menu-price {
+    font-size: 16pt;
 }
 
-.resto-pic-wide, .resto-pic-small{
+.resto-pic-wide, .resto-pic-small {
     width: 100%;
     height: 200px;
     background-color: #23b574;
@@ -133,103 +133,239 @@ div[class*=resto-card-] {
     white-space: nowrap;
 }
 
-#recommended{
-    margin-bottom:2%;
+#recommended {
+    margin-bottom: 2%;
 }
 
-.resto-banner{
-    height:25%;
+.resto-banner {
+    height: 25%;
 }
 
-.resto-banner-pic{
+.resto-banner-pic {
     background-color: #23b574;
-    height:70%;
+    height: 70%;
 }
 
-.resto-banner-info{
-    background-color:#FFF;
-    height:23%;
-    padding:2% 2%;
+.resto-banner-info {
+    background-color: #FFF;
+    height: 23%;
+    padding: 2% 2%;
 }
 
-.resto-banner-info > .resto-name{
-    margin:0;
+.resto-banner-info > .resto-name {
+    margin: 0;
 }
 
-#menu{
-    display:flex;
-    flex-wrap:wrap;
-    margin-top:1%;
-    height:80%;
+#menu {
+    display: flex;
+    flex-wrap: wrap;
+    margin-top: 1%;
+    height: 80%;
     text-align: left;
-    justify-content: stretch;
+    justify-content: space-around;
 }
 
-.menu-card-small{
+.menu-card-small {
     display: inline-block;
-    height:50%;
-    width:32%;
-    background-color:#FFFFFF;
+    height: 50%;
+    width: 32%;
+    background-color: #FFFFFF;
     padding: 2%;
-    padding-bottom:5%;
+    padding-bottom: 5%;
     box-sizing: border-box;
     flex-grow: 1;
-    margin-top:2%;
+    margin-top: 2%;
 }
 
 .menu-card-small > * {
-    display:block;
+    display: block;
 }
 
-.menu-card-small + .menu-card-small{
+.menu-card-small + .menu-card-small {
     margin-left: 1%;
 }
 
-.menu-card-small:nth-child(3n+1){
+.menu-card-small:nth-child(3n+1) {
     margin-left: 0;
 }
 
 .menu-pic {
-    height:70%;
+    height: 70%;
     background-color: #23b574;
 }
 
-.menu-price, .menu-name, .menu-quantity{
-    text-align:center;
+.menu-price, .menu-name, .menu-quantity {
+    text-align: center;
 }
 
-.menu-quantity{
+.menu-quantity {
     height: 10%;
 }
 
-.qty-menu{
-    width:50%;
-    height:100%;
+.qty-menu {
+    width: 50%;
+    height: 100%;
 }
 
-.qty-button{
+.qty-button {
+    transition-duration: 0.1s;
     padding: 0 5%;
 }
 
-.qty-button:first-child{
-    position:relative;
-    right:-3%;
+.qty-button:active {
+    background-color: #cccccc;
+}
+
+.qty-button:first-child {
+    position: relative;
+    right: -3%;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
 
 }
 
-.qty-button:last-child{
+.qty-button:last-child {
     position: relative;
-    left:-4%;
+    left: -4%;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
 }
 
-.qty-menu, .qty-button{
+.qty-menu, .qty-button {
     height: 100%;
-    margin:0;
+    margin: 0;
     box-sizing: border-box;
     border: 1px solid #cccccc;
     background-color: #FFFFFF;
 }
+
+.bottom-panel {
+    position: fixed;
+    bottom: 0px;
+    height: 9%;
+    width: 100%;
+    background-color: #FFFFFF;
+    display: flex;
+}
+
+.order-total {
+    padding: 1% 5%;
+    flex: 0.7;
+    font-family: "Source Code Bold";
+}
+
+.order-total > .total-label {
+    color: #646464;
+    font-size: 20pt;
+    padding-left: 3%;
+}
+
+.order-total > .total-number {
+    padding-left: 10%;
+    font-size: 40pt;
+    color: #23b574;
+}
+
+.order-total > .total-number:before {
+    font-size: 40pt;
+    content: "Rp ";
+    color: #23b574;
+}
+
+.order-button {
+    flex: 0.3;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #23b574;
+    color: #FFFFFF;
+    font-size: 40px;
+}
+
+.order-total-sending {
+    padding: 1% 5%;
+    flex: 0.7;
+    font-family: "Source Code Bold";
+    background-color: #23b574;
+    color: #FFFFFF;
+}
+
+.order-total-sending > .total-label {
+    color: #FFFFFF;
+    font-size: 20pt;
+    padding-left: 3%;
+}
+
+.order-total-sending > .total-number {
+    padding-left: 10%;
+    font-size: 40pt;
+    color: #FFFFFF;
+}
+
+.order-total-sending > .total-number:before {
+    font-size: 40pt;
+    content: "Rp ";
+    color: #FFFFFF;
+}
+
+.order-cancel {
+    flex: 0.3;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: #b12122;
+    color: #FFFFFF;
+    font-size: 40px;
+}
+
+#map {
+    width: 100%;
+    background-color: #646464;
+    height: 60%;
+}
+
+#progress {
+    background-color: #FFFFFF;
+    width: 100%;
+    height: 30%;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Source Code Bold";
+
+    text-align: center;
+    vertical-align: top;
+}
+
+div[class*=progress-][class*=-active] {
+    color: #23b574;
+}
+
+div[class^=progress-1], div[class^=progress-2], div[class^=progress-3] {
+    width: 27%;
+    height: 40%;
+}
+
+div[class^=progress-2], div[class^=progress-3] {
+    margin-left: 5%;
+}
+
+.progress-bubble {
+    width: 100px;
+    height: 100px;
+    font-size: 60pt;
+    color: #FFFFFF;
+    background-color: #8e8e8e;
+    border-radius: 100%;
+    margin: 0 auto;
+}
+
+div[class*=progress-][class*=active] > .progress-bubble {
+    background-color: #23b574;
+}
+
