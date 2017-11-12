@@ -18,7 +18,9 @@
         <div class="card-content">
             <div class="content-label">Menu</div>
             <div class="content-box" id="menu">
-                
+                <form id="orderForm" method="GET" action="https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGNY6fi2rBthYV_RuqUvVA7X1z/dev?route=addOrder">
+
+                </form>
             </div>
         </div>
     </div>
@@ -33,7 +35,7 @@
             </div>
         </div>
         <div class="order-button">
-            Pesan
+            <button onclick="showConfirm();">Pesan</button> 
         </div>
     </div>
 </div>
@@ -57,16 +59,16 @@
             <div class="notification-content">
                 <div class="amount-box">
                     <div class="label">Pesanan</div>
-                    <div class="amount">16.000</div>
+                    <div class="amount" id="am-pesanan">16.000</div>
                 </div>
                 <div class="amount-box">
                     <div class="label">Biaya Antar</div>
-                    <div class="amount">106.000</div>
+                    <div class="amount" id="am-antar">3.000</div>
                 </div>
                 <hr>
                 <div class="amount-box">
                     <div class="label">Total</div>
-                    <div class="amount">16.000</div>
+                    <div class="amount" id="am-total">16.000</div>
                 </div>
             </div>
         </div>
@@ -80,7 +82,7 @@
             </div>
         </div>
 
-        <button type="button">Pesan</button>
+        <button type="button" onclick="sendform();">Pesan</button>
     </div>
 </div>
 <div class="notification" id="notification-token">
@@ -93,10 +95,17 @@
             You got a reward token!
         </div>
 
-        <button type="button">OK</button>
+        <button type="button" onclick="window.location.replace('index.html');">OK</button>
     </div>
 </div>
 <script type="text/javascript">
+
+function displayToken(){
+    
+    document.getElementById("notification-confirm").style = "display: hidden;";
+    document.getElementById("notification-token").style = "display: flex;";
+}
+
 function getSearchParameters() {
       var prmstr = window.location.search.substr(1);
       return prmstr != null && prmstr != "" ? transformToAssocArray(prmstr) : {};
@@ -111,7 +120,7 @@ function transformToAssocArray( prmstr ) {
     }
     return params;
 }
-
+var currentRestoJSON;
 var params = getSearchParameters();
 var xmlhttp;
 if (window.XMLHttpRequest){
@@ -123,7 +132,7 @@ xmlhttp.open("GET","https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGN
 xmlhttp.send();
 xmlhttp.onreadystatechange = function () {
     if (this.readyState === 4 && this.status === 200){
-        var currentRestoJSON = JSON.parse(this.response);
+        currentRestoJSON = JSON.parse(this.response);
         var banner = document.getElementsByClassName("resto-banner")[0];
         var pic = document.createElement("div");
         pic.className = "resto-banner-pic";
@@ -156,10 +165,8 @@ xmlhttpX.onreadystatechange = function () {
         console.log(this.response);
         var currentMenuJSON = JSON.parse(this.response);
         // ambil id menu
-        var menu = document.getElementById("menu");
-        var formMenu = document.createElement("form");
+        var formMenu = document.getElementById("orderForm");
         var currentMenuJSONRes = currentMenuJSON.result
-        menu.appendChild(formMenu);
         for (var menu in currentMenuJSONRes){
             var menucard = document.createElement("div");
             menucard.className = "menu-card-small";
@@ -173,7 +180,8 @@ xmlhttpX.onreadystatechange = function () {
             menucard.appendChild(menuname);
             var menuprice = document.createElement("div");
             menuprice.className = "menu-price";
-            menuprice.innerHTML = "Rp " + currentMenuJSONRes[menu].harga;
+            menuprice.id = "price-" + currentMenuJSONRes[menu].nama;
+            menuprice.innerHTML = currentMenuJSONRes[menu].harga;
             menucard.appendChild(menuprice);
             var menuquantity = document.createElement("div");
             menuquantity.className = "menu-quantity";
@@ -183,10 +191,12 @@ xmlhttpX.onreadystatechange = function () {
             btnmin.type="button";
             btnmin.innerHTML = "-";
             menuquantity.appendChild(btnmin);
-            var btnmin = document.createElement("input");
-            btnmin.className = "qty-menu";
-            btnmin.type="text";
-            menuquantity.appendChild(btnmin);
+            var inp = document.createElement("input");
+            inp.className = "qty-menu";
+            inp.name = currentMenuJSONRes[menu].nama;
+            inp.type="text";
+            inp.value = 0;
+            menuquantity.appendChild(inp);
             var btnplus = document.createElement("button");
             btnplus.className = "qty-button";
             btnplus.type="button";
@@ -195,6 +205,77 @@ xmlhttpX.onreadystatechange = function () {
         }
     }
 };
+
+var form = document.getElementById("orderForm");
+
+function calculateSum() {
+    var sum = 0;
+    for (var i = 0, ii = form.length; i < ii; ++i) {
+    var data = {};
+    var input = form[i];
+    if (input.name && (input.value > 0)) {
+      sum = sum + (input.value * (document.getElementById("price-" + input.name).innerHTML));
+    }
+    document.getElementsByClassName("total-number")[0].innerHTML = sum;
+    document.getElementById("am-pesanan").innerHTML = sum;
+    document.getElementById("am-total").innerHTML = sum + 3000;
+    // push ke json
+  }
+  return sum;
+}
+
+var retval = {};
+
+function showConfirm() {
+    calculateSum();
+    document.getElementById("notification-confirm").style = "display: flex;";
+}
+
+function sendform() {
+
+    displayToken();
+  // collect the form data while iterating over the inputs
+  
+  retval.warung_id = params.id;
+  retval.delivery_location = document.getElementById("lokasi-antar").value;
+  retval.delivery_location = "tes";
+  retval.delivery_lat = 0;
+  retval.delivery_long = 0;
+  retval.total = calculateSum() + 3000;
+    retval.item = [];
+  for (var i = 0, ii = form.length; i < ii; ++i) {
+    var data = {};
+    var input = form[i];
+    if (input.name && (input.value > 0)) {
+      data["item_name"] = input.name;
+      data["qty"] = input.value;
+      retval.item.push(data);
+    }
+    
+    // push ke json
+  }
+  console.log(JSON.stringify(retval));
+
+  var xhr;
+    if (window.XMLHttpRequest){
+        xhr = new XMLHttpRequest();
+    } else {
+        xhr = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    var sendreq = "https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGNY6fi2rBthYV_RuqUvVA7X1z/dev?route=addOrder&order=" + JSON.stringify(retval);
+    xhr.open("GET",sendreq,true);
+    //xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
+    //console.log(sendreq);
+    xhr.send();
+    xhr.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200){
+        console.log(this.response);
+        }
+    };
+  
+
+};
+
 </script>
 </body>
 </html>
