@@ -206,6 +206,7 @@ div[class*=resto-card-] {
 .qty-menu {
     width: 50%;
     height: 100%;
+    text-align:center;
 }
 
 .qty-button {
