@@ -44,6 +44,7 @@ body {
     padding: 3% 0;
     position: fixed;
     width: 100%;
+    z-index: 6;
 }
 
 .content {
@@ -369,3 +370,85 @@ div[class*=progress-][class*=active] > .progress-bubble {
     background-color: #23b574;
 }
 
+.notification {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    top: 0;
+    z-index: 5;
+    background-color: rgba(50, 50, 50, 0.6);
+    width: 100%;
+    height: 100%;
+    position: fixed;
+}
+
+.notification-box {
+    box-sizing: border-box;
+    padding: 4% 4%;
+    border-radius: 5px;
+    margin: 0 auto;
+
+    height: 40%;
+    width: 80%;
+
+    opacity: 1;
+    background-color: #FFFFFF;
+
+}
+
+.notification-header {
+    font-family: "Source Code Bold";
+}
+
+.notification-content {
+    text-indent: 5%;
+    width:100%;
+}
+
+.notification-section{
+    width:100%;
+}
+
+.notification-section + .notification-section {
+    margin-top: 5%;
+}
+
+#alergen {
+    color: #b12122;
+}
+
+.amount-box{
+    display: flex;
+}
+
+#total .label{
+    text-align: right;
+    font-family: "Source Code Bold";
+    margin-left:40%;
+    flex:0.6;
+    width:60%;
+}
+
+#total .amount{
+    flex:0.4;
+}
+
+#lokasi .notification-content{
+    text-indent: 0;
+}
+
+#lokasi-antar{
+    margin-top:3%;
+    font-size:20pt;
+    width: 80%;
+    border:0;
+    border-bottom: 1px solid #8e8e8e;
+    color:#646464;
+}
+
+#edit:before{
+    margin-left:10%;
+    color:#23b574;
+    content:"\270E";
+    font-size:36pt;
+}
