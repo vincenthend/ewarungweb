@@ -493,3 +493,8 @@ div[class*=progress-][class*=active] > .progress-bubble {
 #notification-confirm{
     display: none;
 }
+
+a {
+    color: #000000;
+    text-decoration: none;
+}

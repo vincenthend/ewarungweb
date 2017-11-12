@@ -12,150 +12,13 @@
     </div>
     <div class="content">
         <div class="resto-banner">
-            <div class="resto-banner-pic"></div>
-            <div class="resto-banner-info">
-                <div class="resto-name">
-                    Warung Burger
-                </div>
-                <div class="resto-address">
-                    Jl. Gang 1 No 2
-                </div>
-            </div>
+            
         </div>
 
         <div class="card-content">
             <div class="content-label">Menu</div>
             <div class="content-box" id="menu">
-                <form>
-                    <div class="menu-card-small">
-                        <div class="menu-pic">
-
-                        </div>
-                        <div class="menu-name">
-                            Warung Burger
-                        </div>
-                        <div class="menu-price">
-                            Rp 5000
-                        </div>
-                        <div class="menu-quantity">
-                            <button type="button" class="qty-button">-</button>
-                            <input type="text" class="qty-menu">
-                            <button type="button" class="qty-button">+</button>
-                        </div>
-                    </div>
-                    <div class="menu-card-small">
-                        <div class="menu-pic">
-
-                        </div>
-                        <div class="menu-name">
-                            Warung Burger
-                        </div>
-                        <div class="menu-price">
-                            Rp 5000
-                        </div>
-                        <div class="menu-quantity">
-                            <button type="button" class="qty-button">-</button>
-                            <input type="text" class="qty-menu">
-                            <button type="button" class="qty-button">+</button>
-                        </div>
-                    </div>
-                    <div class="menu-card-small">
-                        <div class="menu-pic">
-
-                        </div>
-                        <div class="menu-name">
-                            Warung Burger
-                        </div>
-                        <div class="menu-price">
-                            Rp 5000
-                        </div>
-                        <div class="menu-quantity">
-                            <button type="button" class="qty-button">-</button>
-                            <input type="text" class="qty-menu">
-                            <button type="button" class="qty-button">+</button>
-                        </div>
-                    </div>
-                    <div class="menu-card-small">
-                        <div class="menu-pic">
-
-                        </div>
-                        <div class="menu-name">
-                            Warung Burger
-                        </div>
-                        <div class="menu-price">
-                            Rp 5000
-                        </div>
-                        <div class="menu-quantity">
-                            <button type="button" class="qty-button">-</button>
-                            <input type="text" class="qty-menu">
-                            <button type="button" class="qty-button">+</button>
-                        </div>
-                    </div>
-                    <div class="menu-card-small">
-                        <div class="menu-pic">
-
-                        </div>
-                        <div class="menu-name">
-                            Warung Burger
-                        </div>
-                        <div class="menu-price">
-                            Rp 5000
-                        </div>
-                        <div class="menu-quantity">
-                            <button type="button" class="qty-button">-</button>
-                            <input type="text" class="qty-menu">
-                            <button type="button" class="qty-button">+</button>
-                        </div>
-                    </div>
-                    <div class="menu-card-small">
-                        <div class="menu-pic">
-
-                        </div>
-                        <div class="menu-name">
-                            Warung Burger
-                        </div>
-                        <div class="menu-price">
-                            Rp 5000
-                        </div>
-                        <div class="menu-quantity">
-                            <button type="button" class="qty-button">-</button>
-                            <input type="text" class="qty-menu">
-                            <button type="button" class="qty-button">+</button>
-                        </div>
-                    </div>
-                    <div class="menu-card-small">
-                        <div class="menu-pic">
-
-                        </div>
-                        <div class="menu-name">
-                            Warung Burger
-                        </div>
-                        <div class="menu-price">
-                            Rp 5000
-                        </div>
-                        <div class="menu-quantity">
-                            <button type="button" class="qty-button">-</button>
-                            <input type="text" class="qty-menu">
-                            <button type="button" class="qty-button">+</button>
-                        </div>
-                    </div>
-                    <div class="menu-card-small">
-                        <div class="menu-pic">
-
-                        </div>
-                        <div class="menu-name">
-                            Warung Burger
-                        </div>
-                        <div class="menu-price">
-                            Rp 5000
-                        </div>
-                        <div class="menu-quantity">
-                            <button type="button" class="qty-button">-</button>
-                            <input type="text" class="qty-menu">
-                            <button type="button" class="qty-button">+</button>
-                        </div>
-                    </div>
-                </form>
+                
             </div>
         </div>
     </div>
@@ -233,6 +96,105 @@
         <button type="button">OK</button>
     </div>
 </div>
+<script type="text/javascript">
+function getSearchParameters() {
+      var prmstr = window.location.search.substr(1);
+      return prmstr != null && prmstr != "" ? transformToAssocArray(prmstr) : {};
+}
 
+function transformToAssocArray( prmstr ) {
+    var params = {};
+    var prmarr = prmstr.split("&");
+    for ( var i = 0; i < prmarr.length; i++) {
+        var tmparr = prmarr[i].split("=");
+        params[tmparr[0]] = tmparr[1];
+    }
+    return params;
+}
+
+var params = getSearchParameters();
+var xmlhttp;
+if (window.XMLHttpRequest){
+    xmlhttp = new XMLHttpRequest();
+} else {
+    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+}
+xmlhttp.open("GET","https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGNY6fi2rBthYV_RuqUvVA7X1z/dev?route=getWarungbyId&id=" + params.id,true);
+xmlhttp.send();
+xmlhttp.onreadystatechange = function () {
+    if (this.readyState === 4 && this.status === 200){
+        var currentRestoJSON = JSON.parse(this.response);
+        var banner = document.getElementsByClassName("resto-banner")[0];
+        var pic = document.createElement("div");
+        pic.className = "resto-banner-pic";
+        banner.appendChild(pic);
+        var bannerInfo = document.createElement("div");
+        bannerInfo.className = "resto-banner-info";
+        banner.appendChild(bannerInfo);
+        var bannerName = document.createElement("div");
+        bannerName.className = "resto-name";
+        bannerName.innerHTML = currentRestoJSON.result.restoName;
+        bannerInfo.appendChild(bannerName);
+        var bannerAdd = document.createElement("div");
+        bannerAdd.className = "resto-address";
+        bannerAdd.innerHTML = currentRestoJSON.result.restoLoc;
+        bannerInfo.appendChild(bannerAdd);
+    }
+};
+
+// Ambil data menu
+var xmlhttpX;
+if (window.XMLHttpRequest){
+    xmlhttpX = new XMLHttpRequest();
+} else {
+    xmlhttpX = new ActiveXObject("Microsoft.XMLHTTP");
+}
+xmlhttpX.open("GET","https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGNY6fi2rBthYV_RuqUvVA7X1z/dev?route=getMenu&id=" + params.id,true);
+xmlhttpX.send();
+xmlhttpX.onreadystatechange = function () {
+    if (this.readyState === 4 && this.status === 200){
+        console.log(this.response);
+        var currentMenuJSON = JSON.parse(this.response);
+        // ambil id menu
+        var menu = document.getElementById("menu");
+        var formMenu = document.createElement("form");
+        var currentMenuJSONRes = currentMenuJSON.result
+        menu.appendChild(formMenu);
+        for (var menu in currentMenuJSONRes){
+            var menucard = document.createElement("div");
+            menucard.className = "menu-card-small";
+            formMenu.appendChild(menucard);
+            var menupic = document.createElement("div");
+            menupic.className = "menu-pic";
+            menucard.appendChild(menupic);
+            var menuname = document.createElement("div");
+            menuname.className = "menu-name";
+            menuname.innerHTML = currentMenuJSONRes[menu].nama;
+            menucard.appendChild(menuname);
+            var menuprice = document.createElement("div");
+            menuprice.className = "menu-price";
+            menuprice.innerHTML = "Rp " + currentMenuJSONRes[menu].harga;
+            menucard.appendChild(menuprice);
+            var menuquantity = document.createElement("div");
+            menuquantity.className = "menu-quantity";
+            menucard.appendChild(menuquantity);
+            var btnmin = document.createElement("button");
+            btnmin.className = "qty-button";
+            btnmin.type="button";
+            btnmin.innerHTML = "-";
+            menuquantity.appendChild(btnmin);
+            var btnmin = document.createElement("input");
+            btnmin.className = "qty-menu";
+            btnmin.type="text";
+            menuquantity.appendChild(btnmin);
+            var btnplus = document.createElement("button");
+            btnplus.className = "qty-button";
+            btnplus.type="button";
+            btnplus.innerHTML = "+";
+            menuquantity.appendChild(btnplus);
+        }
+    }
+};
+</script>
 </body>
 </html>
