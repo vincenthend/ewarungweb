@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <title>E-Warung</title>
     <link rel="stylesheet" type="text/css" href="css/styles.css">
+    
 </head>
 <body>
 <div class="container">
@@ -19,79 +20,67 @@
         </div>
         <div class="card-content">
             <div class="content-label">Nearest to You</div>
-            <div class="content-box" id="nearest">
-                <div class="resto-card-small">
-                    <div class="resto-pic-small">
-
-                    </div>
-                    <div class="resto-name">
-                        Warung Burger
-                    </div>
-                    <div class="resto-address">
-                        Jl. Gang 1 No 2
-                    </div>
-                </div>
-                <div class="resto-card-small">
-                    <div class="resto-pic-small">
-
-                    </div>
-                    <div class="resto-name">
-                        Kantin Bu Elis
-                    </div>
-                    <div class="resto-address">
-                        Jl. Disitu I No 2
-                    </div>
-                </div>
-                <div class="resto-card-small">
-                    <div class="resto-pic-small">
-
-                    </div>
-                    <div class="resto-name">
-                        Kantin Bu Elis
-                    </div>
-                    <div class="resto-address">
-                        Jl. Disitu I No 2
-                    </div>
-                </div>
-            </div>
+            <div class="content-box" id="nearest"></div>
             <div class="content-label">Recommended</div>
             <div class="content-box" id="recommended">
-                <div class="resto-card-big">
-                    <div class="resto-pic-wide">
-
-                    </div>
-                    <div class="resto-name">
-                        Warung Burger
-                    </div>
-                    <div class="resto-address">
-                        Jl. Gang I No 2
-                    </div>
-                </div>
-                <div class="resto-card-big">
-                    <div class="resto-pic-wide">
-
-                    </div>
-                    <div class="resto-name">
-                        Warung Burger
-                    </div>
-                    <div class="resto-address">
-                        Jl. Gang I No 2
-                    </div>
-                </div>
-                <div class="resto-card-big">
-                    <div class="resto-pic-wide">
-
-                    </div>
-                    <div class="resto-name">
-                        Warung Burger
-                    </div>
-                    <div class="resto-address">
-                        Jl. Gang I No 2
-                    </div>
-                </div>
+                
             </div>
         </div>
     </div>
 </div>
+<script type="text/javascript">
+    // Fetch data from endpoint
+    var xmlhttp;
+    if (window.XMLHttpRequest){
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.open("GET","https://script.googleusercontent.com/macros/echo?user_content_key=S-mOFkJ3ypqMu4lRouKy8I7M2hDaJ-NZju0MUDT7zG6YBlNvrNxSuT7Tlt7a54wV6yN9TBRVhTl-qOIB6E0pKTS5kmd6Yqufm5_BxDlH2jW0nuo2oDemN9CCS2h10ox_1xSncGQajx_ryfhECjZEnBvN0zJoeqpBu9cnymAv17jJgJo5nbez9C9RD2BGmKX5nFcWuDm3BL3c5bson6kBcmD-gsRPm3rboQHq3V91L8Y&lib=MhT7OpTrKBB1qvpOOZE6_NouHIF15f6JN",true);
+    xmlhttp.send();
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200){/*
+                  var user = document.getElementById("username");
+                        var nama = document.createTextNode("Hi, " + this.response);
+                        user.appendChild(nama);*/
+                        console.log(this.response);
+                        var restoJSON = JSON.parse(this.response);
+                        var contentbox = document.getElementById("recommended");
+                        var res = restoJSON.result;
+                        for(var resto in res) {
+                            var newnode = document.createElement("div");
+                            newnode.className = "resto-card-big";
+                            var rspic = document.createElement("div");
+                            rspic.className = "resto-pic-wide";
+                            newnode.appendChild(rspic);
+                            var rsname = document.createElement("div");
+                            rsname.className = "resto-name";
+                            rsname.innerHTML = res[resto].restoName;
+                            newnode.appendChild(rsname);
+                            var rsadd = document.createElement("div");
+                            rsadd.className = "resto-address";
+                            rsadd.innerHTML = res[resto].restoLoc
+                            newnode.appendChild(rsadd);
+                            document.getElementById("recommended").appendChild(newnode);
+                        }
+                        for(var resto in res) {
+                            var newnode = document.createElement("div");
+                            newnode.className = "resto-card-small";
+                            var rspic = document.createElement("div");
+                            rspic.className = "resto-pic-wide";
+                            newnode.appendChild(rspic);
+                            var rsname = document.createElement("div");
+                            rsname.className = "resto-name";
+                            rsname.innerHTML = res[resto].restoName;
+                            newnode.appendChild(rsname);
+                            var rsadd = document.createElement("div");
+                            rsadd.className = "resto-address";
+                            rsadd.innerHTML = res[resto].restoLoc
+                            newnode.appendChild(rsadd);
+                            document.getElementById("nearest").appendChild(newnode);
+                        }
+                    }
+                };
+</script>
 </body>
 </html>
