@@ -55,16 +55,56 @@
         </div>
     </div>
 
-    <script>
-        function initMap() {
-            var uluru = {lat: -25.363, lng: 131.044};
-            var map = new google.maps.Map(document.getElementById('map'), {
-                zoom: 6,
-                center: uluru
-            });
-        }
-    </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtrJrATfjBw3tNZm-o9xZqBciFBBBSrUc&callback=initMap"></script>
 </div>
+<script>
+function initMap() {
+    var uluru = {lat: 0, lng: 0};
+    var map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 6,
+        center: uluru
+    });
+}
+
+function getSearchParameters() {
+    var prmstr = window.location.search.substr(1);
+    return prmstr != null && prmstr != "" ? transformToAssocArray(prmstr) : {};
+}
+
+function transformToAssocArray( prmstr ) {
+    var params = {};
+    var prmarr = prmstr.split("&");
+    for ( var i = 0; i < prmarr.length; i++) {
+        var tmparr = prmarr[i].split("=");
+        params[tmparr[0]] = tmparr[1];
+    }
+    return params;
+}
+
+var params = getSearchParameters();
+var xmlhttp;
+if (window.XMLHttpRequest){
+    xmlhttp = new XMLHttpRequest();
+} else {
+    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+}
+xmlhttp.open("GET","https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGNY6fi2rBthYV_RuqUvVA7X1z/dev?route=getOrder&id=" + params.id,true);
+xmlhttp.send();
+xmlhttp.onreadystatechange = function () {
+    if (this.readyState === 4 && this.status === 200){
+        var currentOrderJSON = JSON.parse(this.response);
+        var res = currentOrderJSON.result;
+        if (res.ready) {
+            document.getElementsByClassName("progress-2")[0].className = "progress-2-active";
+        }
+        if (res.delivered) {
+            document.getElementsByClassName("progress-3")[0].className = "progress-3-active";
+        }
+        document.getElementsByClassName("total-number")[0].innerHTML = res.total;
+    }
+};
+    
+</script>
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtrJrATfjBw3tNZm-o9xZqBciFBBBSrUc&callback=initMap"></script>
+
 </body>
 </html>
