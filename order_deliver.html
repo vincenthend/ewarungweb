@@ -20,14 +20,9 @@
             <div class="order-header">
                 <div class="order-label">Pesanan</div>
             </div>
-            <div class="order-item">
-                <div class="item-name">Es Teh Manis</div>
-                <div class="item-qty">5</div>
-            </div>
-            <div class="order-item">
-                <div class="item-name">Sayur Bening</div>
-                <div class="item-qty">30</div>
-            </div>
+            <div id="list-pesanan">
+                </div>
+            
             <div class="order-location">
                 <div class="order-label">Lokasi Pengantaran</div>
                 <div class="order-content">Jalan Disitu Baru IV no 3</div>
@@ -87,13 +82,25 @@
         if (this.readyState === 4 && this.status === 200){
             var currentOrderJSON = JSON.parse(this.response);
             var res = currentOrderJSON.result;
-            if (res.ready) {
-                document.getElementsByClassName("progress-2")[0].className = "progress-2-active";
-            }
-            if (res.delivered) {
-                document.getElementsByClassName("progress-3")[0].className = "progress-3-active";
-            }
+            
             document.getElementsByClassName("total-number")[0].innerHTML = res.total;
+
+            var listpesanan = document.getElementById("list-pesanan");
+            var itemlist = res.item_ordered;
+            for(var i in itemlist){
+                var orderitem = document.createElement("div");
+                orderitem.className = "order-item";
+                listpesanan.appendChild(orderitem);
+                var iname = document.createElement("div");
+                iname.className="item-name";
+                iname.innerHTML=itemlist[i].item_name;
+                orderitem.appendChild(iname);
+                var iqty = document.createElement("div");
+                iqty.className="item-name";
+                iqty.innerHTML=itemlist[i].item_qty;
+                orderitem.appendChild(iqty);                
+            }
+            document.getElementsByClassName("order-content")[0].innerHTML = res.delivery_location;
         }
     };
 
