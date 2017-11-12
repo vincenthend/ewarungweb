@@ -84,7 +84,7 @@ body {
     margin-top: 5%;
 }
 
-div[class*=resto-card-] {
+div[class*=resto-card-], div[class*=order-card] {
     margin-top: 1%;
     background-color: #FFF;
     padding: 2% 2%;
@@ -102,7 +102,7 @@ div[class*=resto-card-] {
     height: 100%;
 }
 
-.res-card-big {
+.resto-card-big {
     width: 100%;
 }
 
@@ -498,4 +498,51 @@ div[class*=progress-][class*=active] > .progress-bubble {
 a {
     color: #000000;
     text-decoration: none;
+}
+
+.order-header, .order-item{
+    display:flex;
+}
+
+.order-label{
+    flex:0.7;
+    font-family:"Source Code Bold";
+}
+
+.order-time{
+    flex:0.3;
+    text-align:right;
+    color:#8e8e8e;
+    margin-right:3%;
+}
+
+.order-header + .order-item{
+    margin-top:3%;
+}
+
+.item-name{
+    text-indent:8%;
+    flex:0.8;
+}
+
+.item-qty{
+    flex:0.2;
+    text-align:right;
+    margin-right:5%;
+}
+
+.button-ready{
+    width:100%;
+    margin-top:3%;
+    padding:4% 0;
+    font-family: "Source Code Bold";
+    font-size:26pt;
+    color: #ffffff;
+    background-color: #23b574;
+    border:0;
+    border-radius:10px;
+}
+
+.button-ready:active{
+    background-color: #239c60;
 }
