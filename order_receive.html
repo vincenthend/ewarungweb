@@ -19,84 +19,91 @@
         </div>
         <div class="card-content">
             <div class="content-label">Order Received</div>
-            <div class="content-box" id="recommended">
-                <div class="order-card-big">
-                    <div class="order-header">
-                        <div class="order-label">Prepare Order</div>
-                        <div class="order-time">23:55</div>
-                    </div>
-                    <div class="order-item">
-                        <div class="item-name">Es Teh Manis</div>
-                        <div class="item-qty">5</div>
-                    </div>
-                    <div class="order-item">
-                        <div class="item-name">Sayur Bening</div>
-                        <div class="item-qty">30</div>
-                    </div>
-                    <button type="button" class="button-ready">Order Ready</button>
-                </div>
+            <div class="content-box">
+                
             </div>
         </div>
     </div>
-    <script type="text/javascript">
-        // Fetch data from endpoint
-        var xmlhttp;
-        if (window.XMLHttpRequest) {
-            xmlhttp = new XMLHttpRequest();
-        } else {
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-        }
-        xmlhttp.open("GET", "https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGNY6fi2rBthYV_RuqUvVA7X1z/dev?route=getWarung", true);
-        xmlhttp.send();
-        xmlhttp.onreadystatechange = function () {
-            if (this.readyState === 4 && this.status === 200) {/*
-                  var user = document.getElementById("username");
-                        var nama = document.createTextNode("Hi, " + this.response);
-                        user.appendChild(nama);
-                        console.log(this.response);*/
-                var restoJSON = JSON.parse(this.response);
-                var contentbox = document.getElementById("recommended");
-                var res = restoJSON.result;
-                for (var resto in res) {
-                    var linking = document.createElement("a");
-                    linking.href = "menu.html?id=" + res[resto].restoId;
-                    var newnode = document.createElement("div");
-                    newnode.className = "resto-card-big";
-                    linking.appendChild(newnode);
-                    var rspic = document.createElement("div");
-                    rspic.className = "resto-pic-wide";
-                    newnode.appendChild(rspic);
-                    var rsname = document.createElement("div");
-                    rsname.className = "resto-name";
-                    rsname.innerHTML = res[resto].restoName;
-                    newnode.appendChild(rsname);
-                    var rsadd = document.createElement("div");
-                    rsadd.className = "resto-address";
-                    rsadd.innerHTML = res[resto].restoLoc
-                    newnode.appendChild(rsadd);
-                    document.getElementById("recommended").appendChild(linking);
+</div>
+
+<script type="text/javascript">
+function getSearchParameters() {
+var prmstr = window.location.search.substr(1);
+return prmstr != null && prmstr != "" ? transformToAssocArray(prmstr) : {};
+}
+
+function transformToAssocArray( prmstr ) {
+var params = {};
+var prmarr = prmstr.split("&");
+for ( var i = 0; i < prmarr.length; i++) {
+    var tmparr = prmarr[i].split("=");
+    params[tmparr[0]] = tmparr[1];
+}
+return params;
+}
+var params = getSearchParameters();
+
+function submitReady(id){
+    var xmlhttp;
+    if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.open("GET","https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGNY6fi2rBthYV_RuqUvVA7X1z/dev?route=orderReady&id=" + id,true);
+    xmlhttp.send();
+    console.log(id);
+}
+    // Fetch data from endpoint
+    var xmlhttp;
+    if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.open("GET","https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGNY6fi2rBthYV_RuqUvVA7X1z/dev?route=getWarungOrder&id=" + params.id,true);
+    xmlhttp.send();
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            var currentOrderJSON = JSON.parse(this.response);
+            var res = currentOrderJSON.result;
+            var contentBox = document.getElementsByClassName("content-box")[0];
+            for (var j in res){
+                var ordercardbig = document.createElement("div");
+                ordercardbig.className = "order-card-big";
+                contentBox.appendChild(ordercardbig);
+                var orderheader = document.createElement("div");
+                orderheader.className = "order-header";
+                ordercardbig.appendChild(orderheader);
+                var orderlabel = document.createElement("div");
+                orderlabel.className = "order-label";
+                orderlabel.innerHTML = "Prepare Order";
+                orderheader.appendChild(orderlabel);
+                var listpesanan = document.createElement("div");
+                ordercardbig.appendChild(listpesanan);
+                var itemlist = res[j].item_ordered;
+                for(var i in itemlist){
+                    var orderitem = document.createElement("div");
+                    orderitem.className = "order-item";
+                    listpesanan.appendChild(orderitem);
+                    var iname = document.createElement("div");
+                    iname.className="item-name";
+                    iname.innerHTML=itemlist[i].item_name;
+                    orderitem.appendChild(iname);
+                    var iqty = document.createElement("div");
+                    iqty.className="item-name";
+                    iqty.innerHTML=itemlist[i].item_qty;
+                    orderitem.appendChild(iqty);                
                 }
-                for (var resto in res) {
-                    var linking = document.createElement("a");
-                    linking.href = "menu.html?id=" + res[resto].restoId;
-                    var newnode = document.createElement("div");
-                    newnode.className = "resto-card-small";
-                    newnode.appendChild(linking);
-                    var rspic = document.createElement("div");
-                    rspic.className = "resto-pic-wide";
-                    linking.appendChild(rspic);
-                    var rsname = document.createElement("div");
-                    rsname.className = "resto-name";
-                    rsname.innerHTML = res[resto].restoName;
-                    linking.appendChild(rsname);
-                    var rsadd = document.createElement("div");
-                    rsadd.className = "resto-address";
-                    rsadd.innerHTML = res[resto].restoLoc
-                    linking.appendChild(rsadd);
-                    document.getElementById("nearest").appendChild(newnode);
-                }
+                var tombol = document.createElement("button");
+                tombol.type = "button";
+                tombol.className = "button-ready";
+                tombol.onclick = function() {submitReady(res[j].order_id);};
+                tombol.innerHTML = "Order Ready";
+                ordercardbig.appendChild(tombol);
             }
-        };
-    </script>
+        }
+    };
+</script>
 </body>
 </html>
