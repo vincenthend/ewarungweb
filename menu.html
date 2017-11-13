@@ -19,7 +19,6 @@
             <div class="content-label">Menu</div>
             <div class="content-box" id="menu">
                 <form id="orderForm" method="GET" action="https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGNY6fi2rBthYV_RuqUvVA7X1z/dev?route=addOrder">
-
                 </form>
             </div>
         </div>
@@ -31,11 +30,11 @@
                 Total
             </div>
             <div class="total-number">
-                230.000
+                0
             </div>
         </div>
-        <div class="order-button">
-            <button onclick="showConfirm();">Pesan</button> 
+        <div class="order-button" onclick="showConfirm();">
+            Pesan
         </div>
     </div>
 </div>
@@ -204,6 +203,14 @@ xmlhttpX.onreadystatechange = function () {
             menuquantity.appendChild(btnplus);
         }
     }
+	button = document.getElementsByClassName('qty-button');
+field = document.getElementsByClassName('qty-menu');
+    for(i=0; i<button.length; i++) {
+        button[i].addEventListener('click', calculateSum);
+    }
+	for(i=0; i<field.length; i++) {
+        field[i].addEventListener('change', calculateSum);
+    }
 };
 
 var form = document.getElementById("orderForm");
@@ -219,6 +226,7 @@ function calculateSum() {
     document.getElementsByClassName("total-number")[0].innerHTML = sum;
     document.getElementById("am-pesanan").innerHTML = sum;
     document.getElementById("am-total").innerHTML = sum + 3000;
+	console.log("asd");
     // push ke json
   }
   return sum;
