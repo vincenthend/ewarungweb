@@ -94,13 +94,18 @@
             You got a reward token!
         </div>
 
-        <button type="button" onclick="window.location.replace('index.html');">OK</button>
+        <button type="button" onclick="toOrder()">OK</button>
     </div>
 </div>
 <script type="text/javascript">
 
+var idOrder = 0;
+
+function toOrder(){
+	window.location.replace('order_sending.html?id='+idOrder);
+}
+
 function displayToken(){
-    
     document.getElementById("notification-confirm").style = "display: hidden;";
     document.getElementById("notification-token").style = "display: flex;";
 }
@@ -204,7 +209,7 @@ xmlhttpX.onreadystatechange = function () {
         }
     }
 	button = document.getElementsByClassName('qty-button');
-field = document.getElementsByClassName('qty-menu');
+	field = document.getElementsByClassName('qty-menu');
     for(i=0; i<button.length; i++) {
         button[i].addEventListener('click', calculateSum);
     }
@@ -240,13 +245,10 @@ function showConfirm() {
 }
 
 function sendform() {
-
-    displayToken();
   // collect the form data while iterating over the inputs
   
   retval.warung_id = params.id;
   retval.delivery_location = document.getElementById("lokasi-antar").value;
-  retval.delivery_location = "tes";
   retval.delivery_lat = 0;
   retval.delivery_long = 0;
   retval.total = calculateSum() + 3000;
@@ -277,7 +279,9 @@ function sendform() {
     xhr.send();
     xhr.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200){
-        console.log(this.response);
+			idOrder = this.response.result;
+			console.log(this.response);
+			displayToken();
         }
     };
   
