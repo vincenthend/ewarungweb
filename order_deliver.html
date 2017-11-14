@@ -25,7 +25,7 @@
             
             <div class="order-location">
                 <div class="order-label">Lokasi Pengantaran</div>
-                <div class="order-content">Jalan Disitu Baru IV no 3</div>
+                <div class="order-content"></div>
             </div>
         </div>
     </div>
@@ -46,12 +46,19 @@
 
 </div>
 <script>
+    var map;
+    var marker; 
     function initMap() {
         var uluru = {lat: 0, lng: 0};
-        var map = new google.maps.Map(document.getElementById('map'), {
-            zoom: 6,
+        map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 15,
             center: uluru
         });
+        marker = new google.maps.Marker({
+    position: uluru,
+    map: map,
+    title: 'Your Loc'
+  });
     }
 
     function getSearchParameters() {
@@ -100,6 +107,10 @@
                 iqty.innerHTML=itemlist[i].item_qty;
                 orderitem.appendChild(iqty);                
             }
+            lati = res.delivery_latitude;
+            longi = res.delivery_longitude;
+            map.setCenter(new google.maps.LatLng( lati, longi ) );
+            marker.setPosition(new google.maps.LatLng( lati, longi ) );
             document.getElementsByClassName("order-content")[0].innerHTML = res.delivery_location;
         }
     };
