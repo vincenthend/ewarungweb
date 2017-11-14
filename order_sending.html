@@ -90,31 +90,35 @@ function transformToAssocArray( prmstr ) {
 }
 
 var params = getSearchParameters();
-var xmlhttp;
-if (window.XMLHttpRequest){
-    xmlhttp = new XMLHttpRequest();
-} else {
-    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-}
-xmlhttp.open("GET","https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGNY6fi2rBthYV_RuqUvVA7X1z/dev?route=getOrder&id=" + params.id,true);
-xmlhttp.send();
-xmlhttp.onreadystatechange = function () {
-    if (this.readyState === 4 && this.status === 200){
-        var currentOrderJSON = JSON.parse(this.response);
-        var res = currentOrderJSON.result;
-        lati = res.delivery_latitude;
-        longi = res.delivery_longitude;
-        map.setCenter(new google.maps.LatLng( lati, longi ) );
-        marker.setPosition(new google.maps.LatLng( lati, longi ) );
-        if (res.ready) {
-            document.getElementsByClassName("progress-2")[0].className = "progress-2-active";
-        }
-        if (res.delivered) {
-            document.getElementsByClassName("progress-3")[0].className = "progress-3-active";
-        }
-        document.getElementsByClassName("total-number")[0].innerHTML = res.total;
+
+function updateStat() {
+    var xmlhttp;
+    if (window.XMLHttpRequest){
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
-};
+    xmlhttp.open("GET","https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGNY6fi2rBthYV_RuqUvVA7X1z/dev?route=getOrder&id=" + params.id,true);
+    xmlhttp.send();
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200){
+            var currentOrderJSON = JSON.parse(this.response);
+            var res = currentOrderJSON.result;
+            lati = res.delivery_latitude;
+            longi = res.delivery_longitude;
+            map.setCenter(new google.maps.LatLng( lati, longi ) );
+            marker.setPosition(new google.maps.LatLng( lati, longi ) );
+            if (res.ready) {
+                document.getElementsByClassName("progress-2")[0].className = "progress-2-active";
+            }
+            if (res.delivered) {
+                document.getElementsByClassName("progress-3")[0].className = "progress-3-active";
+            }
+            document.getElementsByClassName("total-number")[0].innerHTML = res.total;
+        }
+    };
+}
+var t=setInterval(updateStat,2000);
     
 </script>
 <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtrJrATfjBw3tNZm-o9xZqBciFBBBSrUc&callback=initMap"></script>
