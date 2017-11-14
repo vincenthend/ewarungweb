@@ -19,98 +19,91 @@
         </div>
         <div class="card-content">
             <div class="content-label">Order Received</div>
-            <div class="content-box" id="received">
-                <div class="order-card-big">
-                    <div class="order-header">
-                        <div class="order-label">Prepare Order</div>
-                        <div class="order-time">23:55</div>
-                    </div>
-                    <div class="order-item">
-                        <div class="item-name">Es Teh Manis</div>
-                        <div class="item-qty">5</div>
-                    </div>
-                    <div class="order-item">
-                        <div class="item-name">Sayur Bening</div>
-                        <div class="item-qty">30</div>
-                    </div>
-                    <button type="button" class="button-ready">Order Ready</button>
-                </div>
+            <div class="content-box">
+                
             </div>
         </div>
     </div>
-    <script type="text/javascript">
-		function transformToAssocArray( prmstr ) {
-			var params = {};
-			var prmarr = prmstr.split("&");
-			for ( var i = 0; i < prmarr.length; i++) {
-				var tmparr = prmarr[i].split("=");
-				params[tmparr[0]] = tmparr[1];
-			}
-			return params;
-		}	
+</div>
 
-		function getSearchParameters() {
-			  var prmstr = window.location.search.substr(1);
-			  return prmstr != null && prmstr != "" ? transformToAssocArray(prmstr) : {};
-		}		
-		
-        // Fetch data from endpoint
-        var xmlhttp;
-        if (window.XMLHttpRequest) {
-            xmlhttp = new XMLHttpRequest();
-        } else {
-            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-        }
-		
-		param = getSearchParameters();
-        xmlhttp.open("GET", "https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGNY6fi2rBthYV_RuqUvVA7X1z/dev?route=getWarungOrder&id="+param.id, true);
-        xmlhttp.send();
-        xmlhttp.onreadystatechange = function () {
-            if (this.readyState === 4 && this.status === 200) {
-                var restoJSON = JSON.parse(this.response);
-                var contentbox = document.getElementById("received");
-                var res = restoJSON.result;
-				var linking = document.getElementById("received");
-				
-                for (var i = 0; i <= res.length; i++) {
-					var order = res[i];
-					console.log(JSON.stringify(res[i]));
-                    var newnode = document.createElement("div");
-                    newnode.className = "order-card-big";
-                    linking.appendChild(newnode);
-                    var header = document.createElement("div");
-                    header.className = "order-header";
-                    newnode.appendChild(header);
-                    var label = document.createElement("div");
-                    label.className = "order-label";
-					label.innerHTML = "Prepare Order";
-                    header.appendChild(label);
-					var time = document.createElement("div");
-                    time.className = "order-time";
-					time.innerHTML = "23:55";
-                    header.appendChild(time);
-					
-					for(var item in order.item_ordered){
-						var itemlist = document.createElement("div");
-						itemlist.className = "order-item";
-						var itemel = document.createElement("div");
-						itemel.className = "item-name";
-						itemel.innerHTML = item.item_name;
-						itemlist.appendChild(itemel);
-						var qty = document.createElement("div");
-						qty.className = "item-qty";
-						qty.innerHTML = item.item_qty;
-						itemlist.appendChild(qty);
-						newnode.appendChild(itemlist);
-					}
-					var button = document.createElement("button");
-					button.type = "button";
-					button.class = "button-ready";
-					newnode.appendChild(button);
-					
+<script type="text/javascript">
+function getSearchParameters() {
+var prmstr = window.location.search.substr(1);
+return prmstr != null && prmstr != "" ? transformToAssocArray(prmstr) : {};
+}
+
+function transformToAssocArray( prmstr ) {
+var params = {};
+var prmarr = prmstr.split("&");
+for ( var i = 0; i < prmarr.length; i++) {
+    var tmparr = prmarr[i].split("=");
+    params[tmparr[0]] = tmparr[1];
+}
+return params;
+}
+var params = getSearchParameters();
+
+function submitReady(id){
+    var xmlhttp;
+    if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.open("GET","https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGNY6fi2rBthYV_RuqUvVA7X1z/dev?route=orderReady&id=" + id,true);
+    xmlhttp.send();
+    console.log(id);
+}
+    // Fetch data from endpoint
+    var xmlhttp;
+    if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    } else {
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.open("GET","https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGNY6fi2rBthYV_RuqUvVA7X1z/dev?route=getWarungOrder&id=" + params.id,true);
+    xmlhttp.send();
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            var currentOrderJSON = JSON.parse(this.response);
+            var res = currentOrderJSON.result;
+            var contentBox = document.getElementsByClassName("content-box")[0];
+            for (var j in res){
+                var ordercardbig = document.createElement("div");
+                ordercardbig.className = "order-card-big";
+                contentBox.appendChild(ordercardbig);
+                var orderheader = document.createElement("div");
+                orderheader.className = "order-header";
+                ordercardbig.appendChild(orderheader);
+                var orderlabel = document.createElement("div");
+                orderlabel.className = "order-label";
+                orderlabel.innerHTML = "Prepare Order";
+                orderheader.appendChild(orderlabel);
+                var listpesanan = document.createElement("div");
+                ordercardbig.appendChild(listpesanan);
+                var itemlist = res[j].item_ordered;
+                for(var i in itemlist){
+                    var orderitem = document.createElement("div");
+                    orderitem.className = "order-item";
+                    listpesanan.appendChild(orderitem);
+                    var iname = document.createElement("div");
+                    iname.className="item-name";
+                    iname.innerHTML=itemlist[i].item_name;
+                    orderitem.appendChild(iname);
+                    var iqty = document.createElement("div");
+                    iqty.className="item-name";
+                    iqty.innerHTML=itemlist[i].item_qty;
+                    orderitem.appendChild(iqty);                
                 }
+                var tombol = document.createElement("button");
+                tombol.type = "button";
+                tombol.className = "button-ready";
+                tombol.onclick = function() {submitReady(res[j].order_id);};
+                tombol.innerHTML = "Order Ready";
+                ordercardbig.appendChild(tombol);
             }
-        };
-    </script>
+        }
+    };
+</script>
 </body>
 </html>

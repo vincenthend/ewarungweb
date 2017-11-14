@@ -258,25 +258,13 @@ function showConfirm() {
     document.getElementById("notification-confirm").style = "display: flex;";
 }
 
-function getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
-    } else { 
-        x.innerHTML = "Geolocation is not supported by this browser.";
-    }
-}
-
-function showPosition(position) {
-    retval.delivery_lat =  position.coords.latitude;
-    retval.delivery_long = position.coords.longitude;
-}
-getLocation();
 function sendform() {
   // collect the form data while iterating over the inputs
   
   retval.warung_id = params.id;
   retval.delivery_location = document.getElementById("lokasi-antar").value;
-    getLocation();
+  retval.delivery_lat = 0;
+  retval.delivery_long = 0;
   retval.total = calculateSum() + 3000;
     retval.item = [];
   for (var i = 0, ii = form.length; i < ii; ++i) {
@@ -308,6 +296,7 @@ function sendform() {
 			console.log(this.response);
 			var jsonObj = JSON.parse(this.response);
 			displayToken(jsonObj.result);
+			
         }
     };
   

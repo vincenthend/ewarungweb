@@ -10,7 +10,7 @@
     <div class="header">
         E-Warung
     </div>
-    <div class="content" id="menu-list">
+    <div class="content">
         <div class="resto-banner">
             
         </div>
@@ -23,7 +23,6 @@
             </div>
         </div>
     </div>
-	<div class="block-adder"></div>
 
     <div class="bottom-panel">
         <div class="order-total">
@@ -95,23 +94,20 @@
             You got a reward token!
         </div>
 
-        <button type="button" onClick="toOrder()">OK</button>
+        <button type="button" onclick="toOrder()">OK</button>
     </div>
 </div>
 <script type="text/javascript">
 
 var idOrder = 0;
-var menu_count = 0;
 
 function toOrder(){
-	console.log(idOrder);
 	window.location.replace('order_sending.html?id='+idOrder);
 }
 
-function displayToken(id){
+function displayToken(){
     document.getElementById("notification-confirm").style = "display: hidden;";
     document.getElementById("notification-token").style = "display: flex;";
-	idOrder = id;
 }
 
 function getSearchParameters() {
@@ -175,7 +171,6 @@ xmlhttpX.onreadystatechange = function () {
         // ambil id menu
         var formMenu = document.getElementById("orderForm");
         var currentMenuJSONRes = currentMenuJSON.result
-		menu_count = currentMenuJSONRes.length;
         for (var menu in currentMenuJSONRes){
             var menucard = document.createElement("div");
             menucard.className = "menu-card-small";
@@ -212,7 +207,6 @@ xmlhttpX.onreadystatechange = function () {
             btnplus.innerHTML = "+";
             menuquantity.appendChild(btnplus);
         }
-		updateLength();
     }
 	button = document.getElementsByClassName('qty-button');
 	field = document.getElementsByClassName('qty-menu');
@@ -223,14 +217,6 @@ xmlhttpX.onreadystatechange = function () {
         field[i].addEventListener('change', calculateSum);
     }
 };
-
-function updateLength(){
-	var elm = document.getElementsByClassName("block-adder")[0];
-	
-	var size = menu_count <= 6 ? 0: Math.floor(menu_count/3)*20;
-	
-	elm.style.cssText = "height: "+size+"%; width:100%;";
-}
 
 var form = document.getElementById("orderForm");
 
@@ -305,9 +291,10 @@ function sendform() {
     xhr.send();
     xhr.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200){
-			console.log(this.response);
-			var jsonObj = JSON.parse(this.response);
-			displayToken(jsonObj.result);
+			var temp = JSON.parse(this.response);
+            idOrder = temp.result;
+			console.log(idOrder);
+			displayToken();
         }
     };
   

@@ -305,9 +305,17 @@ function sendform() {
     xhr.send();
     xhr.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200){
+<<<<<<< HEAD
 			console.log(this.response);
 			var jsonObj = JSON.parse(this.response);
 			displayToken(jsonObj.result);
+			
+=======
+			var temp = JSON.parse(this.response);
+            idOrder = temp.result;
+			console.log(idOrder);
+			displayToken();
+>>>>>>> 54c2104a60812e5feeabbde96ab159cceac9bb54
         }
     };
   
