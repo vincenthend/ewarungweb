@@ -291,8 +291,9 @@ function sendform() {
     xhr.send();
     xhr.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200){
-			idOrder = this.response.result;
-			console.log(this.response);
+			var temp = JSON.parse(this.response);
+            idOrder = temp.result;
+			console.log(idOrder);
 			displayToken();
         }
     };

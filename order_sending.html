@@ -57,12 +57,21 @@
 
 </div>
 <script>
+    var lati = 0;
+    var longi = 0;
+    var uluru = {lat: lati, lng: longi};
+    var map;
+    var marker;
 function initMap() {
-    var uluru = {lat: 0, lng: 0};
-    var map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 6,
+    map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 15,
         center: uluru
     });
+    marker = new google.maps.Marker({
+    position: uluru,
+    map: map,
+    title: 'Your Loc'
+  });
 }
 
 function getSearchParameters() {
@@ -93,6 +102,10 @@ xmlhttp.onreadystatechange = function () {
     if (this.readyState === 4 && this.status === 200){
         var currentOrderJSON = JSON.parse(this.response);
         var res = currentOrderJSON.result;
+        lati = res.delivery_latitude;
+        longi = res.delivery_longitude;
+        map.setCenter(new google.maps.LatLng( lati, longi ) );
+        marker.setPosition(new google.maps.LatLng( lati, longi ) );
         if (res.ready) {
             document.getElementsByClassName("progress-2")[0].className = "progress-2-active";
         }
