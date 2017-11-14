@@ -40,7 +40,7 @@
             </div>
         </div>
         <div class="order-cancel">
-            X
+            Konfirmasi
         </div>
     </div>
 
@@ -77,6 +77,19 @@
     }
 
     var params = getSearchParameters();
+
+    function submitConfirm() {
+        var xmlhttpY;
+    if (window.XMLHttpRequest){
+        xmlhttpY = new XMLHttpRequest();
+    } else {
+        xmlhttpY = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttpY.open("GET","https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGNY6fi2rBthYV_RuqUvVA7X1z/dev?route=orderDelivered&id=" + params.id,true);
+    xmlhttpY.send();
+    location.reload();
+    }
+
     var xmlhttp;
     if (window.XMLHttpRequest){
         xmlhttp = new XMLHttpRequest();
@@ -112,6 +125,7 @@
             map.setCenter(new google.maps.LatLng( lati, longi ) );
             marker.setPosition(new google.maps.LatLng( lati, longi ) );
             document.getElementsByClassName("order-content")[0].innerHTML = res.delivery_location;
+            document.getElementsByClassName("order-cancel")[0].onclick = function() {submitConfirm(params.id);}
         }
     };
 
