@@ -199,18 +199,24 @@ xmlhttpX.onreadystatechange = function () {
             btnmin.className = "qty-button";
             btnmin.type="button";
             btnmin.innerHTML = "-";
+			btnmin.id="min-"+currentMenuJSONRes[menu].nama;
             menuquantity.appendChild(btnmin);
             var inp = document.createElement("input");
             inp.className = "qty-menu";
             inp.name = currentMenuJSONRes[menu].nama;
             inp.type="text";
             inp.value = 0;
+			inp.id = "qty-"+currentMenuJSONRes[menu].nama;
             menuquantity.appendChild(inp);
             var btnplus = document.createElement("button");
             btnplus.className = "qty-button";
             btnplus.type="button";
             btnplus.innerHTML = "+";
+			btnplus.id = "plus-"+currentMenuJSONRes[menu].nama;
             menuquantity.appendChild(btnplus);
+			
+			btnplus.addEventListener("click",plus);
+			btnmin.addEventListener("click",minus);
         }
 		updateLength();
     }
@@ -223,6 +229,20 @@ xmlhttpX.onreadystatechange = function () {
         field[i].addEventListener('change', calculateSum);
     }
 };
+
+function plus(){
+	var id = event.target.id.split("-")[1];
+	var el = document.getElementById("qty-"+id);
+	
+	el.value = parseInt(el.value)+1;
+}
+
+function minus(){
+	var id = event.target.id.split("-")[1];
+	var el = document.getElementById("qty-"+id);
+	
+	el.value = parseInt(el.value)- 1;
+}
 
 function updateLength(){
 	var elm = document.getElementsByClassName("block-adder")[0];
