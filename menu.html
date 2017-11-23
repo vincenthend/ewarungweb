@@ -196,33 +196,40 @@ xmlhttpX.onreadystatechange = function () {
             menuquantity.className = "menu-quantity";
             menucard.appendChild(menuquantity);
             var btnmin = document.createElement("button");
-            btnmin.className = "qty-button";
+            btnmin.className = "qty-button-min";
             btnmin.type="button";
             btnmin.innerHTML = "-";
+            btnmin.id="min-"+currentMenuJSONRes[menu].nama;
             menuquantity.appendChild(btnmin);
             var inp = document.createElement("input");
             inp.className = "qty-menu";
             inp.name = currentMenuJSONRes[menu].nama;
             inp.type="text";
             inp.value = 0;
+            inp.id = "qty-"+currentMenuJSONRes[menu].nama;
             menuquantity.appendChild(inp);
             var btnplus = document.createElement("button");
-            btnplus.className = "qty-button";
+            btnplus.className = "qty-button-plus";
             btnplus.type="button";
             btnplus.innerHTML = "+";
+            btnplus.id = "plus-"+currentMenuJSONRes[menu].nama;
+            console.log(menu);
+            btnplus.onclick = function() {addVal(menu)};
             menuquantity.appendChild(btnplus);
+            btnplus.addEventListener("click",plus);
+            btnmin.addEventListener("click",minus);
         }
 		updateLength();
     }
-	button = document.getElementsByClassName('qty-button');
+	//button = document.getElementsByClassName('qty-button');
+    buttonPlus = document.getElementsByClassName('qty-button-plus');
 	field = document.getElementsByClassName('qty-menu');
-    for(i=0; i<button.length; i++) {
-        button[i].addEventListener('click', calculateSum);
-    }
-	for(i=0; i<field.length; i++) {
+    for(i=0; i<field.length; i++) {
         field[i].addEventListener('change', calculateSum);
     }
 };
+
+
 
 function updateLength(){
 	var elm = document.getElementsByClassName("block-adder")[0];
@@ -249,6 +256,29 @@ function calculateSum() {
     // push ke json
   }
   return sum;
+}
+
+function plus(){
+ 	var id = event.target.id.split("-")[1];
+ 	var el = document.getElementById("qty-"+id);
+ 	
+ 	el.value = parseInt(el.value)+1;
+     calculateSum();
+ }
+
+ function minus(){
+ 	var id = event.target.id.split("-")[1];
+ 	var el = document.getElementById("qty-"+id);
+ 	
+ 	el.value = parseInt(el.value)- 1;
+     calculateSum();
+ }
+
+
+function addVal(j){
+    //var field = document.getElementsByClassName('qty-menu')[i];
+    //field.value = field.value + 1;
+    console.log(j);
 }
 
 var retval = {};
