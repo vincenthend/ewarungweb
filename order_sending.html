@@ -77,7 +77,6 @@
         var start = new google.maps.LatLng(res.warung_latitude, res.warung_longitude);
         calcRoute(start, destination)
     }
-
     function calcRoute(start, destination) {
         var request = {
             origin: start,
@@ -102,7 +101,6 @@
             }
         });
     }
-
     function getLocation() {
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(showPosition, null, {
@@ -114,12 +112,10 @@
             x.innerHTML = "Geolocation is not supported by this browser.";
         }
     }
-
     function showPosition(position) {
         lati = position.coords.latitude;
         longi = position.coords.longitude;
     }
-
     function initMap() {
         directionsService = new google.maps.DirectionsService();
         directionsDisplay = new google.maps.DirectionsRenderer({
@@ -139,12 +135,10 @@
 
         directionsDisplay.setMap(map);
     }
-
     function getSearchParameters() {
         var prmstr = window.location.search.substr(1);
         return prmstr !== null && prmstr !== "" ? transformToAssocArray(prmstr) : {};
     }
-
     function transformToAssocArray(prmstr) {
         var params = {};
         var prmarr = prmstr.split("&");
@@ -154,7 +148,6 @@
         }
         return params;
     }
-
     function updateStat() {
         var xmlhttp;
         if (window.XMLHttpRequest) {

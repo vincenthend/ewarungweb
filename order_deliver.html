@@ -66,7 +66,6 @@
         var start = new google.maps.LatLng(res.warung_latitude, res.warung_longitude);
         calcRoute(start, destination)
     }
-
     function calcRoute(start, destination) {
         var request = {
             origin: start,
@@ -91,7 +90,6 @@
             }
         });
     }
-
     function initMap() {
         directionsService = new google.maps.DirectionsService();
         directionsDisplay = new google.maps.DirectionsRenderer({
@@ -111,12 +109,10 @@
         });
         directionsDisplay.setMap(map);
     }
-
     function getSearchParameters() {
         var prmstr = window.location.search.substr(1);
         return prmstr !== null && prmstr !== "" ? transformToAssocArray(prmstr) : {};
     }
-
     function transformToAssocArray(prmstr) {
         var params = {};
         var prmarr = prmstr.split("&");
@@ -126,7 +122,6 @@
         }
         return params;
     }
-
     function submitConfirm() {
         var xmlhttpY;
         if (window.XMLHttpRequest) {
@@ -139,7 +134,9 @@
         location.reload();
     }
 
-    // Variable Declarations
+    /**
+     * Variable Declarations
+     */
 
     var map;
     var markerDelivery;

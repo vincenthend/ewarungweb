@@ -123,7 +123,7 @@
      */
     function toOrder() {
         console.log(idOrder);
-        window.location.replace('order_sending.html?id=' + idOrder+'&lat='+retval.delivery_lat+'&long='+retval.delivery_long);
+        window.location.replace('order_sending.html?id=' + idOrder + '&lat=' + retval.delivery_lat + '&long=' + retval.delivery_long);
     }
     function displayToken(id) {
         document.getElementById("notification-confirm").style = "display: hidden;";
@@ -145,7 +145,7 @@
     }
     function updateLength() {
         var elm = document.getElementsByClassName("block-adder")[0];
-        var row_count = Math.ceil(menu_count/3);
+        var row_count = Math.ceil(menu_count / 3);
         var size = menu_count <= 6 ? 15 : row_count * row_count * 1.25 + row_count * 13.45 - 7.15;
 
         elm.style.cssText = "height: " + size + "%; width:100%;";
@@ -176,7 +176,10 @@
         var id = event.target.id.split("-")[1];
         var el = document.getElementById("qty-" + id);
 
-        el.value = parseInt(el.value) - 1;
+        if(el.value > 0){
+            el.value = parseInt(el.value) - 1;
+        }
+
         calculateSum();
     }
     function showConfirm() {
