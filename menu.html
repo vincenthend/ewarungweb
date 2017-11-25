@@ -198,8 +198,8 @@ xmlhttpX.onreadystatechange = function () {
             formMenu.appendChild(menucard);
             var menupic = document.createElement("div");
             menupic.className = "menu-pic";
-            if(currentMenuJSONRes[menu].restoPic !== ''){
-                menupic.style = 'background-image:url("'+currentMenuJSONRes[menu].restoPic+'"); background-size:cover; background-position:center;';
+            if(currentMenuJSONRes[menu].picture !== ''){
+                menupic.style = 'background-image:url("'+currentMenuJSONRes[menu].picture+'"); background-size:cover; background-position:center;';
             }
             else{
                 menupic.style = 'background-image:url("images/placeholder.png"); background-size:contain; background-position:center;';
