@@ -13,6 +13,7 @@
     <meta name="msapplication-navbutton-color" content="#444444">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="msapplication-starturl" content="/">
+    <meta name="viewport" content="width=device-width">
     <link rel="icon" type="image/png" sizes="256x256" href="favicon.png">
     <link rel="apple-touch-icon" type="image/png" sizes="256x256" href="favicon.png">
 </head>
@@ -58,81 +59,171 @@
                 Total
             </div>
             <div class="total-number">
-            
+
             </div>
         </div>
         <div class="order-cancel">
-            X
+            🞪
         </div>
     </div>
 
 </div>
 <script>
-    var lati = 0;
-    var longi = 0;
-    var uluru = {lat: lati, lng: longi};
-    var map;
-    var marker;
-function initMap() {
-    map = new google.maps.Map(document.getElementById('map'), {
-        zoom: 15,
-        center: uluru
-    });
-    marker = new google.maps.Marker({
-    position: uluru,
-    map: map,
-    title: 'Your Loc'
-  });
-}
-
-function getSearchParameters() {
-    var prmstr = window.location.search.substr(1);
-    return prmstr != null && prmstr != "" ? transformToAssocArray(prmstr) : {};
-}
-
-function transformToAssocArray( prmstr ) {
-    var params = {};
-    var prmarr = prmstr.split("&");
-    for ( var i = 0; i < prmarr.length; i++) {
-        var tmparr = prmarr[i].split("=");
-        params[tmparr[0]] = tmparr[1];
+    /**
+     * Functions Declaration
+     */
+    function getDirection(res) {
+        var destination = new google.maps.LatLng(lati, longi);
+        var start = new google.maps.LatLng(res.warung_latitude, res.warung_longitude);
+        calcRoute(start, destination)
     }
-    return params;
-}
 
-var params = getSearchParameters();
+    function calcRoute(start, destination) {
+        var request = {
+            origin: start,
+            destination: destination,
+            travelMode: 'DRIVING'
+        };
 
-function updateStat() {
-    var xmlhttp;
-    if (window.XMLHttpRequest){
-        xmlhttp = new XMLHttpRequest();
-    } else {
-        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        directionsService.route(request, function (response, status) {
+            if (status === 'OK') {
+                directionsDisplay.setDirections(response);
+                // Log Directions
+                if (window.XMLHttpRequest) {
+                    xmlhttp = new XMLHttpRequest();
+                } else {
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                var route = JSON.stringify(response);
+                var parameter = "route=setOrderRoute&id=" + params.id + "&dir=" + route;
+                xmlhttp.open("POST", "https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGNY6fi2rBthYV_RuqUvVA7X1z/dev");
+                xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xmlhttp.send(parameter);
+            }
+        });
     }
-    xmlhttp.open("GET","https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGNY6fi2rBthYV_RuqUvVA7X1z/dev?route=getOrder&id=" + params.id,true);
-    xmlhttp.send();
-    xmlhttp.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200){
-            var currentOrderJSON = JSON.parse(this.response);
-            var res = currentOrderJSON.result;
-            lati = res.delivery_latitude;
-            longi = res.delivery_longitude;
-            map.setCenter(new google.maps.LatLng( lati, longi ) );
-            marker.setPosition(new google.maps.LatLng( lati, longi ) );
-            if (res.ready) {
-                document.getElementsByClassName("progress-2")[0].className = "progress-2-active";
-            }
-            if (res.delivered) {
-                document.getElementsByClassName("progress-3")[0].className = "progress-3-active";
-            }
-            document.getElementsByClassName("total-number")[0].innerHTML = res.total;
+
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition, null, {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 60000
+            });
+        } else {
+            x.innerHTML = "Geolocation is not supported by this browser.";
         }
-    };
-}
-var t=setInterval(updateStat,2000);
-    
+    }
+
+    function showPosition(position) {
+        lati = position.coords.latitude;
+        longi = position.coords.longitude;
+    }
+
+    function initMap() {
+        directionsService = new google.maps.DirectionsService();
+        directionsDisplay = new google.maps.DirectionsRenderer({
+            suppressMarkers: true,
+            polylineOptions: {
+                strokeColor: "#239c60",
+                strokeOpacity: 0.8,
+                strokeWeight: 4
+            }
+        });
+        map = new google.maps.Map(document.getElementById('map'), {
+            zoom: 15,
+            center: myLoc,
+            disableDefaultUI: true,
+            clickableIcons: false
+        });
+
+        directionsDisplay.setMap(map);
+    }
+
+    function getSearchParameters() {
+        var prmstr = window.location.search.substr(1);
+        return prmstr !== null && prmstr !== "" ? transformToAssocArray(prmstr) : {};
+    }
+
+    function transformToAssocArray(prmstr) {
+        var params = {};
+        var prmarr = prmstr.split("&");
+        for (var i = 0; i < prmarr.length; i++) {
+            var tmparr = prmarr[i].split("=");
+            params[tmparr[0]] = tmparr[1];
+        }
+        return params;
+    }
+
+    function updateStat() {
+        var xmlhttp;
+        if (window.XMLHttpRequest) {
+            xmlhttp = new XMLHttpRequest();
+        } else {
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.open("GET", "https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGNY6fi2rBthYV_RuqUvVA7X1z/dev?route=getOrder&id=" + params.id, true);
+        xmlhttp.send();
+        xmlhttp.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                var currentOrderJSON = JSON.parse(this.response);
+                var res = currentOrderJSON.result;
+                lati = res.delivery_latitude;
+                longi = res.delivery_longitude;
+                markerDelivery = new google.maps.Marker({
+                    map: map,
+                    position: {lat: lati, lng: longi},
+                    icon: "images/marker-my.png"
+                });
+                markerWarung = new google.maps.Marker({
+                    map: map,
+                    position: {lat: res.warung_latitude, lng: res.warung_longitude},
+                    icon: "images/marker-warung.png"
+                });
+                if (res.route !== '') {
+                    directionsDisplay.setDirections(JSON.parse(res.route));
+                }
+                else {
+                    getDirection(res);
+                }
+                if (res.ready && readyUncheck === true) {
+                    document.getElementsByClassName("progress-2")[0].className = "progress-2-active";
+                    readyUncheck = false;
+                }
+                if (res.delivered && deliverUncheck === true) {
+                    document.getElementsByClassName("progress-3")[0].className = "progress-3-active";
+                    deliverUncheck = false;
+                }
+                document.getElementsByClassName("total-number")[0].innerHTML = res.total;
+            }
+        };
+    }
+
+    // Variables init
+
+    var map;
+    var params = getSearchParameters();
+    var directionsService;
+    var directionsDisplay;
+
+    if (typeof(params.lat) !== 'undefined') {
+        var lati = parseFloat(params.lat);
+        var longi = parseFloat(params.long);
+    }
+    else {
+        lati = 0;
+        longi = 0;
+        getLocation();
+    }
+    var readyUncheck = true;
+    var deliverUncheck = true;
+    var myLoc = {lat: lati, lng: longi};
+    updateStat();
+    var t = setInterval(updateStat, 30000);
+
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtrJrATfjBw3tNZm-o9xZqBciFBBBSrUc&callback=initMap"></script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtrJrATfjBw3tNZm-o9xZqBciFBBBSrUc&callback=initMap"></script>
 
 </body>
 </html>

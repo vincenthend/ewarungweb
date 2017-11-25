@@ -13,6 +13,7 @@
     <meta name="msapplication-navbutton-color" content="#444444">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="msapplication-starturl" content="/">
+    <meta name="viewport" content="width=device-width">
     <link rel="icon" type="image/png" sizes="256x256" href="favicon.png">
     <link rel="apple-touch-icon" type="image/png" sizes="256x256" href="favicon.png">
 </head>
@@ -61,7 +62,6 @@
 
             // Print
             for (var resto in res) {
-                console.log(res[resto]);
                 var linking = document.createElement("a");
                 linking.href = "menu.html?id=" + res[resto].restoId;
                 var newnode = document.createElement("div");
@@ -105,7 +105,7 @@
                     rspic.style = 'background-image:url("'+res[resto].restoPic+'"); background-size:cover; background-position:center;';
                 }
                 else{
-                    rspic.style = 'background-image:url("images/placeholder.png"); background-size:contain; background-position:center;';
+                    rspic.style = 'background-image:url("images/placeholder.png"); background-size:cover; background-position:center;';
                 }
                 linking.appendChild(rspic);
                 rsname = document.createElement("div");
@@ -114,7 +114,7 @@
                 linking.appendChild(rsname);
                 rsadd = document.createElement("div");
                 rsadd.className = "resto-address";
-                rsadd.innerHTML = res[resto].restoLoc.substring(0,24);
+                rsadd.innerHTML = res[resto].restoLoc;
                 linking.appendChild(rsadd);
                 document.getElementById("nearest").appendChild(newnode);
             }

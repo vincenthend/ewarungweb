@@ -19,6 +19,10 @@ form {
     height: 100%;
 }
 
+html {
+    font-size: 0.8rem;
+}
+
 html, body {
     width: 100%;
     height: 100%;
@@ -28,7 +32,6 @@ body {
     margin: 0;
     background-color: #e6e6e6;
     font-family: "Source Code Pro", sans-serif;
-    font-size: 1rem;
     width: 100%;
 }
 
@@ -42,7 +45,7 @@ body {
     color: #FFF;
     font-family: "WinterBrush", serif;
     text-align: center;
-    font-size: 4rem;
+    font-size: 2rem;
     padding: 2% 0;
     position: fixed;
     width: 100%;
@@ -50,14 +53,14 @@ body {
 }
 
 .content {
-    padding-top: 14%;
+    padding-top: 13%;
     height: 100%;
     width: 100%;
     box-sizing: border-box;
 }
 
-.block-adder{
-	
+.block-adder {
+
 }
 
 .card-content {
@@ -77,18 +80,18 @@ body {
     border: 1px solid #646464;
     padding: 0px 20px;
     box-sizing: border-box;
-
-    font-size: 1.5rem;
+    font-family: "Source Code Pro";
 }
 
 .content-label:first-child {
-    margin-top: 2%;
+    margin-top: 1%;
 }
 
 .content-label {
     color: #646464;
     margin-top: 5%;
-    font-size:2rem;
+    font-size: 1.3rem;
+    font-family: "Source Code Bold";
 }
 
 div[class*=resto-card-], div[class*=order-card] {
@@ -105,7 +108,8 @@ div[class*=resto-card-], div[class*=order-card] {
 
 .resto-card-small {
     display: inline-block;
-    min-width: 33%;
+    min-width: 40vw;
+    max-width: 40vw;
     height: 100%;
 }
 
@@ -118,25 +122,27 @@ div[class*=resto-card-], div[class*=order-card] {
 }
 
 .resto-card-big + .resto-card-big {
-    margin-top: 3%;
+    margin-top: 6vh;
 }
 
 .resto-name, .menu-name {
-    margin-top: 10px;
+    margin-top: 0.5rem;
+    overflow: hidden;
+    box-sizing: content-box;
     font-family: "Source Code Bold";
-    font-size: 2rem;
+    font-size: 1rem;
 }
 
-.resto-address{
+.resto-address {
     overflow-x: hidden;
 }
 
 .resto-address, .menu-price {
-    font-size: 1.5rem;
+    font-size: 0.8rem;
 }
 
-.menu-price:before{
-    content:"Rp ";
+.menu-price:before {
+    content: "Rp ";
 }
 
 .resto-pic-wide, .resto-pic-small {
@@ -145,11 +151,11 @@ div[class*=resto-card-], div[class*=order-card] {
 }
 
 .resto-pic-small {
-    height:14rem;
+    height: 15vh;
 }
 
-.resto-pic-wide{
-    height: 17rem;
+.resto-pic-wide {
+    height: 15vh;
 }
 
 #nearest {
@@ -163,9 +169,8 @@ div[class*=resto-card-], div[class*=order-card] {
 
 .resto-banner {
     background-color: #ffffff;
-    height:35%;
+    height: 35%;
     min-height: 35%;
-    margin-bottom:2%;
 }
 
 .resto-banner-pic {
@@ -227,21 +232,31 @@ div[class*=resto-card-], div[class*=order-card] {
 
 .menu-quantity {
     height: 10%;
+    margin-top:2%;
+    padding: 0 15%;
+    display: flex;
 }
 
 .qty-menu {
-    width: 50%;
+    text-align: center;
+    flex: 4;
+    width: 40%;
+    font-family: Arial;
+}
+
+.qty-menu, .qty-button {
+    font-size: 0.8rem;
     height: 100%;
-    text-align:center;
-    font-size:1.3rem;
+    margin: 0;
+    box-sizing: border-box;
+    border: thin solid #cccccc;
+    background-color: #FFFFFF;
 }
 
 .qty-button {
     transition-duration: 0.1s;
-    padding: 0 5%;
-    font-size:1.5rem;
-    width:2rem;
-    box-sizing: border-box;
+    flex: 0.4;
+    width: 10%;
 }
 
 .qty-button:active {
@@ -250,31 +265,20 @@ div[class*=resto-card-], div[class*=order-card] {
 
 .qty-button:first-child {
     position: relative;
-    right: -3%;
     border-top-left-radius: 5px;
     border-bottom-left-radius: 5px;
-
 }
 
 .qty-button:last-child {
     position: relative;
-    left: -4%;
     border-top-right-radius: 5px;
     border-bottom-right-radius: 5px;
-}
-
-.qty-menu, .qty-button {
-    height: 100%;
-    margin: 0;
-    box-sizing: border-box;
-    border: 1px solid #cccccc;
-    background-color: #FFFFFF;
 }
 
 .bottom-panel {
     position: fixed;
     bottom: 0px;
-    height: 9%;
+    height: 9vh;
     width: 100%;
     background-color: #FFFFFF;
     display: flex;
@@ -288,18 +292,18 @@ div[class*=resto-card-], div[class*=order-card] {
 
 .order-total > .total-label {
     color: #646464;
-    font-size: 2rem;
+    font-size: 1rem;
     padding-left: 3%;
 }
 
 .order-total > .total-number {
     padding-left: 10%;
-    font-size: 3rem;
+    font-size: 2rem;
     color: #23b574;
 }
 
 .order-total > .total-number:before {
-    font-size: 3rem;
+    font-size: 2rem;
     content: "Rp ";
     color: #23b574;
 }
@@ -313,7 +317,7 @@ div[class*=resto-card-], div[class*=order-card] {
 
     background-color: #23b574;
     color: #FFFFFF;
-    font-size: 2rem;
+    font-size: 1.5rem;
     font-weight: bolder;
 }
 
@@ -327,18 +331,18 @@ div[class*=resto-card-], div[class*=order-card] {
 
 .order-total-sending > .total-label {
     color: #FFFFFF;
-    font-size: 20pt;
+    font-size: 1rem;
     padding-left: 3%;
 }
 
 .order-total-sending > .total-number {
     padding-left: 10%;
-    font-size: 40pt;
+    font-size: 2rem;
     color: #FFFFFF;
 }
 
 .order-total-sending > .total-number:before {
-    font-size: 40pt;
+    font-size: 2rem;
     content: "Rp ";
     color: #FFFFFF;
 }
@@ -352,7 +356,7 @@ div[class*=resto-card-], div[class*=order-card] {
 
     background-color: #b12122;
     color: #FFFFFF;
-    font-size: 40px;
+    font-size: 1.2rem;
 }
 
 #map {
@@ -375,6 +379,10 @@ div[class*=resto-card-], div[class*=order-card] {
     vertical-align: top;
 }
 
+.progress-label {
+    font-size: 1rem;
+}
+
 div[class*=progress-][class*=-active] {
     color: #23b574;
 }
@@ -389,13 +397,16 @@ div[class^=progress-2], div[class^=progress-3] {
 }
 
 .progress-bubble {
-    width: 100px;
-    height: 100px;
-    font-size: 60pt;
+    display: flex;
+    width: 4rem;
+    height: 4rem;
+    font-size: 2rem;
     color: #FFFFFF;
     background-color: #8e8e8e;
     border-radius: 100%;
     margin: 0 auto;
+    justify-content: center;
+    align-items: center;
 }
 
 div[class*=progress-][class*=active] > .progress-bubble {
@@ -419,8 +430,8 @@ div[class*=progress-][class*=active] > .progress-bubble {
     padding: 4% 4%;
     border-radius: 5px;
     margin: 0 auto;
-
-    height: 40%;
+    font-size: 1rem;
+    height: auto;
     width: 80%;
 
     opacity: 1;
@@ -434,95 +445,105 @@ div[class*=progress-][class*=active] > .progress-bubble {
 
 .notification-content {
     text-indent: 5%;
-    width:100%;
+    width: 100%;
 }
 
-.notification-section{
-    width:100%;
+.notification-section {
+    width: 100%;
 }
 
 .notification-section + .notification-section {
     margin-top: 5%;
 }
 
+hr {
+    border:none;
+    border-top: 1px solid #8e8e8e;
+}
+
 #alergen {
     color: #b12122;
 }
 
-.amount-box{
+.amount-box {
     display: flex;
 }
 
-#total .label{
+#total .label {
     text-align: right;
     font-family: "Source Code Bold";
-    margin-left:40%;
-    flex:0.6;
-    width:60%;
+    margin-left: 40%;
+    flex: 0.6;
+    width: 60%;
 }
 
-#total .amount{
-    flex:0.4;
+#total .amount {
+    flex: 0.4;
 }
 
-#lokasi .notification-content{
+#lokasi .notification-content {
     text-indent: 0;
 }
 
-#lokasi-antar{
-    margin-top:2%;
-    font-size:20pt;
-    width: 80%;
-    border:0;
+#detail-antar {
+    margin-top: 2%;
+    margin-left:3%;
+    font-size: 1rem;
+    width: 85%;
+    border: 0;
     border-bottom: 1px solid #8e8e8e;
-    color:#646464;
+    color: #646464;
     font-family: "Source Code Pro";
 }
 
-#edit:before{
-    margin-left:10%;
-    color:#23b574;
-    content:"\270E";
-    font-size:36pt;
+#edit:before {
+    color: #23b574;
+    content: "\270E";
+    font-size: 2rem;
 }
 
-.notification-box > button{
-    margin-top:3%;
+.notification-box > button {
+    margin-top: 3%;
     box-sizing: border-box;
-    width:100%;
+    width: 100%;
     padding: 5% 0;
-    font-size:20pt;
+    font-size: 1rem;
     font-family: "Source Code Bold";
-    color:#FFFFFF;
+    color: #FFFFFF;
     border: 0;
     border-radius: 10px;
     background-color: #23b574;
 }
 
-.notification-box > button:active{
+.notification-box > button:active {
     background-color: #239c60;
 }
 
-.notification-picture{
+.notification-picture {
     text-align: center;
-    height:50%;
+    height: 40%;
 }
 
-.notification-text{
+#notification-token .notification-picture {
+    background-image: url("../images/token-12.png");
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    height: 7rem;
+    margin: 1rem;
+}
+
+.notification-text {
     text-align: center;
-    font-size:40px;
-    font-family:"Source Code Bold";
+    font-size: 1rem;
+    font-family: "Source Code Bold";
 }
 
-#notification-token > .notification-box{
-    height:30%;
-}
-
-#notification-token{
+#notification-token {
     display: none;
 }
 
-#notification-confirm{
+#notification-confirm {
     display: none;
 }
 
@@ -531,50 +552,55 @@ a {
     text-decoration: none;
 }
 
-.order-header, .order-item{
-    display:flex;
+.order-header, .order-item {
+    display: flex;
 }
 
-.order-label{
-    flex:0.7;
-    font-family:"Source Code Bold";
+.order-item {
+    font-size:1.1rem;
 }
 
-.order-time{
-    flex:0.3;
-    text-align:right;
-    color:#8e8e8e;
-    margin-right:3%;
-}
-
-.order-header + .order-item{
-    margin-top:2%;
-}
-
-.item-name{
-    text-indent:8%;
-    flex:0.8;
-}
-
-.item-qty{
-    flex:0.2;
-    text-align:right;
-    margin-right:5%;
-}
-
-.button-ready{
-    width:100%;
-    margin-top:3%;
-    padding:4% 0;
+.order-label {
+    flex: 0.7;
     font-family: "Source Code Bold";
-    font-size:26pt;
+    font-size:1.3rem;
+}
+
+.order-time {
+    flex: 0.3;
+    text-align: right;
+    color: #8e8e8e;
+    margin-right: 3%;
+}
+
+.order-header + div {
+    margin-top: 2%;
+}
+
+.item-name {
+    text-indent: 8%;
+    flex: 0.8;
+}
+
+.item-qty {
+    flex: 0.2;
+    text-align: right;
+    margin-right: 5%;
+}
+
+.button-ready {
+    width: 100%;
+    margin-top: 5%;
+    padding: 4% 0;
+    font-family: "Source Code Bold";
+    font-size: 1.5rem;
     color: #ffffff;
     background-color: #23b574;
-    border:0;
-    border-radius:10px;
+    border: 0;
+    border-radius: 10px;
 }
 
-.button-ready:active{
+.button-ready:active {
     background-color: #239c60;
 }
 
@@ -583,22 +609,22 @@ a {
     height: 30%;
     width: 100%;
     box-sizing: border-box;
-    padding:5% 5%;
+    padding: 5% 5%;
 }
 
-.order-contact{
+.order-contact {
     font-family: "Source Code Bold";
-    font-size:2rem;
+    font-size: 2rem;
 }
 
-.order-contact + .order-header{
-    margin-top:2%;
+.order-contact + .order-header {
+    margin-top: 2%;
 }
 
-.order-location{
-    margin-top:2%;
+.order-location {
+    margin-top: 2%;
 }
 
-.order-location .order-content{
+.order-location .order-content {
     text-indent: 5%;
 }

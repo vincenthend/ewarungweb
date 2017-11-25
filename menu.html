@@ -13,6 +13,7 @@
     <meta name="msapplication-navbutton-color" content="#444444">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="msapplication-starturl" content="/">
+    <meta name="viewport" content="width=device-width">
     <link rel="icon" type="image/png" sizes="256x256" href="favicon.png">
     <link rel="apple-touch-icon" type="image/png" sizes="256x256" href="favicon.png">
 </head>
@@ -23,18 +24,19 @@
     </div>
     <div class="content" id="menu-list">
         <div class="resto-banner">
-            
+
         </div>
 
         <div class="card-content">
             <div class="content-label">Menu</div>
             <div class="content-box" id="menu">
-                <form id="orderForm" method="GET" action="https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGNY6fi2rBthYV_RuqUvVA7X1z/dev?route=addOrder">
+                <form id="orderForm" method="GET"
+                      action="https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGNY6fi2rBthYV_RuqUvVA7X1z/dev?route=addOrder">
                 </form>
             </div>
         </div>
     </div>
-	<div class="block-adder"></div>
+    <div class="block-adder"></div>
 
     <div class="bottom-panel">
         <div class="order-total">
@@ -86,10 +88,16 @@
 
         <div class="notification-section" id="lokasi">
             <div class="notification-header">
-                Lokasi Pengantaran
+                Keterangan
             </div>
             <div class="notification-content">
-                <input type="text" name="lokasi-antar" id="lokasi-antar"> <span id="edit"></span>
+                <span id="edit"></span><input type="text" name="detail-antar" id="detail-antar">
+            </div>
+        </div>
+
+        <div class="notification-section" id="lokasi">
+            <div class="notification-header">
+                Makanan akan diantarkan ke lokasi anda saat ini! Pastikan GPS menyala!
             </div>
         </div>
 
@@ -98,8 +106,8 @@
 </div>
 <div class="notification" id="notification-token">
     <div class="notification-box">
-        <div class="notification-picture" >
-            <!-- Gambar -->
+        <div class="notification-picture">
+
         </div>
 
         <div class="notification-text">
@@ -110,250 +118,245 @@
     </div>
 </div>
 <script type="text/javascript">
-
-var idOrder = 0;
-var menu_count = 0;
-
-function toOrder(){
-	console.log(idOrder);
-	window.location.replace('order_sending.html?id='+idOrder);
-}
-
-function displayToken(id){
-    document.getElementById("notification-confirm").style = "display: hidden;";
-    document.getElementById("notification-token").style = "display: flex;";
-	idOrder = id;
-}
-
-function getSearchParameters() {
-      var prmstr = window.location.search.substr(1);
-      return prmstr != null && prmstr != "" ? transformToAssocArray(prmstr) : {};
-}
-
-function transformToAssocArray( prmstr ) {
-    var params = {};
-    var prmarr = prmstr.split("&");
-    for ( var i = 0; i < prmarr.length; i++) {
-        var tmparr = prmarr[i].split("=");
-        params[tmparr[0]] = tmparr[1];
+    /**
+     * Function Declaration
+     */
+    function toOrder() {
+        console.log(idOrder);
+        window.location.replace('order_sending.html?id=' + idOrder+'&lat='+retval.delivery_lat+'&long='+retval.delivery_long);
     }
-    return params;
-}
-var currentRestoJSON;
-var params = getSearchParameters();
-var xmlhttp;
-if (window.XMLHttpRequest){
-    xmlhttp = new XMLHttpRequest();
-} else {
-    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-}
-xmlhttp.open("GET","https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGNY6fi2rBthYV_RuqUvVA7X1z/dev?route=getWarungbyId&id=" + params.id,true);
-xmlhttp.send();
-xmlhttp.onreadystatechange = function () {
-    if (this.readyState === 4 && this.status === 200){
-        currentRestoJSON = JSON.parse(this.response);
-        var banner = document.getElementsByClassName("resto-banner")[0];
-        var pic = document.createElement("div");
-        pic.className = "resto-banner-pic";
-        if(currentRestoJSON.result.restoPic !== ''){
-            pic.style = 'background-image:url("'+currentRestoJSON.result.restoPic +'"); background-size:cover; background-position:center;';
-        }
-        else{
-            pic.style = 'background-image:url("images/placeholder-wide.png"); background-size:contain; background-position:center;';
-        }
-        banner.appendChild(pic);
-        var bannerInfo = document.createElement("div");
-        bannerInfo.className = "resto-banner-info";
-        banner.appendChild(bannerInfo);
-        var bannerName = document.createElement("div");
-        bannerName.className = "resto-name";
-        bannerName.innerHTML = currentRestoJSON.result.restoName;
-        bannerInfo.appendChild(bannerName);
-        var bannerAdd = document.createElement("div");
-        bannerAdd.className = "resto-address";
-        bannerAdd.innerHTML = currentRestoJSON.result.restoLoc;
-        bannerInfo.appendChild(bannerAdd);
+    function displayToken(id) {
+        document.getElementById("notification-confirm").style = "display: hidden;";
+        document.getElementById("notification-token").style = "display: flex;";
+        idOrder = id;
     }
-};
+    function getSearchParameters() {
+        var prmstr = window.location.search.substr(1);
+        return prmstr != null && prmstr != "" ? transformToAssocArray(prmstr) : {};
+    }
+    function transformToAssocArray(prmstr) {
+        var params = {};
+        var prmarr = prmstr.split("&");
+        for (var i = 0; i < prmarr.length; i++) {
+            var tmparr = prmarr[i].split("=");
+            params[tmparr[0]] = tmparr[1];
+        }
+        return params;
+    }
+    function updateLength() {
+        var elm = document.getElementsByClassName("block-adder")[0];
+        var row_count = Math.ceil(menu_count/3);
+        var size = menu_count <= 6 ? 15 : row_count * row_count * 1.25 + row_count * 13.45 - 7.15;
 
-// Ambil data menu
-var xmlhttpX;
-if (window.XMLHttpRequest){
-    xmlhttpX = new XMLHttpRequest();
-} else {
-    xmlhttpX = new ActiveXObject("Microsoft.XMLHTTP");
-}
-xmlhttpX.open("GET","https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGNY6fi2rBthYV_RuqUvVA7X1z/dev?route=getMenu&id=" + params.id,true);
-xmlhttpX.send();
-xmlhttpX.onreadystatechange = function () {
-    if (this.readyState === 4 && this.status === 200){
-        var currentMenuJSON = JSON.parse(this.response);
-        // ambil id menu
-        var formMenu = document.getElementById("orderForm");
-        var currentMenuJSONRes = currentMenuJSON.result
-		menu_count = currentMenuJSONRes.length;
-        for (var menu in currentMenuJSONRes){
-            var menucard = document.createElement("div");
-            menucard.className = "menu-card-small";
-            formMenu.appendChild(menucard);
-            var menupic = document.createElement("div");
-            menupic.className = "menu-pic";
-            if(currentMenuJSONRes[menu].picture !== ''){
-                menupic.style = 'background-image:url("'+currentMenuJSONRes[menu].picture+'"); background-size:cover; background-position:center;';
+        elm.style.cssText = "height: " + size + "%; width:100%;";
+    }
+    function calculateSum() {
+        var sum = 0;
+        for (var i = 0, ii = form.length; i < ii; ++i) {
+            var data = {};
+            var input = form[i];
+            if (input.name && (input.value > 0)) {
+                sum = sum + (input.value * (document.getElementById("price-" + input.name).innerHTML));
             }
-            else{
-                menupic.style = 'background-image:url("images/placeholder.png"); background-size:contain; background-position:center;';
-            }
-            menucard.appendChild(menupic);
-            var menuname = document.createElement("div");
-            menuname.className = "menu-name";
-            menuname.innerHTML = currentMenuJSONRes[menu].nama;
-            menucard.appendChild(menuname);
-            var menuprice = document.createElement("div");
-            menuprice.className = "menu-price";
-            menuprice.id = "price-" + currentMenuJSONRes[menu].nama;
-            menuprice.innerHTML = currentMenuJSONRes[menu].harga;
-            menucard.appendChild(menuprice);
-            var menuquantity = document.createElement("div");
-            menuquantity.className = "menu-quantity";
-            menucard.appendChild(menuquantity);
-            var btnmin = document.createElement("button");
-            btnmin.className = "qty-button-min qty-button";
-            btnmin.type="button";
-            btnmin.innerHTML = "-";
-            btnmin.id="min-"+currentMenuJSONRes[menu].nama;
-            menuquantity.appendChild(btnmin);
-            var inp = document.createElement("input");
-            inp.className = "qty-menu";
-            inp.name = currentMenuJSONRes[menu].nama;
-            inp.type="text";
-            inp.value = 0;
-            inp.id = "qty-"+currentMenuJSONRes[menu].nama;
-            menuquantity.appendChild(inp);
-            var btnplus = document.createElement("button");
-            btnplus.className = "qty-button-plus qty-button";
-            btnplus.type="button";
-            btnplus.innerHTML = "+";
-            btnplus.id = "plus-"+currentMenuJSONRes[menu].nama;
-            btnplus.onclick = function() {addVal(menu)};
-            menuquantity.appendChild(btnplus);
-            btnplus.addEventListener("click",plus);
-            btnmin.addEventListener("click",minus);
+            document.getElementsByClassName("total-number")[0].innerHTML = sum;
+            document.getElementById("am-pesanan").innerHTML = sum;
+            document.getElementById("am-total").innerHTML = sum + 3000;
+            // push ke json
         }
-		updateLength();
+        return sum;
     }
-	//button = document.getElementsByClassName('qty-button');
-    buttonPlus = document.getElementsByClassName('qty-button-plus');
-	field = document.getElementsByClassName('qty-menu');
-    for(i=0; i<field.length; i++) {
-        field[i].addEventListener('change', calculateSum);
+    function plus() {
+        var id = event.target.id.split("-")[1];
+        var el = document.getElementById("qty-" + id);
+
+        el.value = parseInt(el.value) + 1;
+        calculateSum();
     }
-};
+    function minus() {
+        var id = event.target.id.split("-")[1];
+        var el = document.getElementById("qty-" + id);
 
-function updateLength(){
-	var elm = document.getElementsByClassName("block-adder")[0];
-	
-	var size = menu_count <= 6 ? 0: Math.floor(menu_count/3)*20;
-	
-	elm.style.cssText = "height: "+size+"%; width:100%;";
-}
-
-var form = document.getElementById("orderForm");
-
-function calculateSum() {
-    var sum = 0;
-    for (var i = 0, ii = form.length; i < ii; ++i) {
-    var data = {};
-    var input = form[i];
-    if (input.name && (input.value > 0)) {
-      sum = sum + (input.value * (document.getElementById("price-" + input.name).innerHTML));
+        el.value = parseInt(el.value) - 1;
+        calculateSum();
     }
-    document.getElementsByClassName("total-number")[0].innerHTML = sum;
-    document.getElementById("am-pesanan").innerHTML = sum;
-    document.getElementById("am-total").innerHTML = sum + 3000;
-    // push ke json
-  }
-  return sum;
-}
-
-function plus(){
- 	var id = event.target.id.split("-")[1];
- 	var el = document.getElementById("qty-"+id);
- 	
- 	el.value = parseInt(el.value)+1;
-     calculateSum();
- }
-
- function minus(){
- 	var id = event.target.id.split("-")[1];
- 	var el = document.getElementById("qty-"+id);
- 	
- 	el.value = parseInt(el.value)- 1;
-     calculateSum();
- }
-
-var retval = {};
-
-function showConfirm() {
-    calculateSum();
-    document.getElementById("notification-confirm").style = "display: flex;";
-}
-
-function getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(showPosition);
-    } else { 
-        x.innerHTML = "Geolocation is not supported by this browser.";
+    function showConfirm() {
+        calculateSum();
+        document.getElementById("notification-confirm").style = "display: flex;";
     }
-}
-
-function showPosition(position) {
-    retval.delivery_lat =  position.coords.latitude;
-    retval.delivery_long = position.coords.longitude;
-}
-getLocation();
-function sendform() {
-  // collect the form data while iterating over the inputs
-  
-  retval.warung_id = params.id;
-  retval.delivery_location = document.getElementById("lokasi-antar").value;
-    getLocation();
-  retval.total = calculateSum() + 3000;
-    retval.item = [];
-  for (var i = 0, ii = form.length; i < ii; ++i) {
-    var data = {};
-    var input = form[i];
-    if (input.name && (input.value > 0)) {
-      data["item_name"] = input.name;
-      data["qty"] = input.value;
-      retval.item.push(data);
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition, null, {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 0
+            });
+        } else {
+            x.innerHTML = "Geolocation is not supported by this browser.";
+        }
     }
-    
-    // push ke json
-  }
-  console.log(JSON.stringify(retval));
+    function showPosition(position) {
+        retval.delivery_lat = position.coords.latitude;
+        retval.delivery_long = position.coords.longitude;
+    }
+    function sendform() {
+        // collect the form data while iterating over the inputs
 
-  var xhr;
-    if (window.XMLHttpRequest){
-        xhr = new XMLHttpRequest();
+        retval.warung_id = params.id;
+        retval.delivery_detail = document.getElementById("detail-antar").value;
+        retval.total = calculateSum() + 3000;
+        retval.item = [];
+        for (var i = 0, ii = form.length; i < ii; ++i) {
+            var data = {};
+            var input = form[i];
+            if (input.name && (input.value > 0)) {
+                data["item_name"] = input.name;
+                data["qty"] = input.value;
+                retval.item.push(data);
+            }
+
+            // push ke json
+        }
+        console.log(JSON.stringify(retval));
+
+        var xhr;
+        if (window.XMLHttpRequest) {
+            xhr = new XMLHttpRequest();
+        } else {
+            xhr = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        var sendreq = "https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGNY6fi2rBthYV_RuqUvVA7X1z/dev?route=addOrder&order=" + JSON.stringify(retval);
+        xhr.open("GET", sendreq, true);
+        xhr.send();
+        xhr.onreadystatechange = function () {
+            if (this.readyState === 4 && this.status === 200) {
+                console.log(this.response);
+                var jsonObj = JSON.parse(this.response);
+                displayToken(jsonObj.result);
+            }
+        };
+    };
+
+    var idOrder = 0;
+    var menu_count = 0;
+    var retval = {};
+    var currentRestoJSON;
+    var params = getSearchParameters();
+    var xmlhttp;
+    var form = document.getElementById("orderForm");
+    if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
     } else {
-        xhr = new ActiveXObject("Microsoft.XMLHTTP");
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
-    var sendreq = "https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGNY6fi2rBthYV_RuqUvVA7X1z/dev?route=addOrder&order=" + JSON.stringify(retval);
-    xhr.open("GET",sendreq,true);
-    //xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-    //console.log(sendreq);
-    xhr.send();
-    xhr.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200){
-			console.log(this.response);
-			var jsonObj = JSON.parse(this.response);
-			displayToken(jsonObj.result);
+    xmlhttp.open("GET", "https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGNY6fi2rBthYV_RuqUvVA7X1z/dev?route=getWarungbyId&id=" + params.id, true);
+    xmlhttp.send();
+    xmlhttp.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            currentRestoJSON = JSON.parse(this.response);
+            var banner = document.getElementsByClassName("resto-banner")[0];
+            var pic = document.createElement("div");
+            pic.className = "resto-banner-pic";
+            if (currentRestoJSON.result.restoPic !== '') {
+                pic.style = 'background-image:url("' + currentRestoJSON.result.restoPic + '"); background-size:cover; background-position:center;';
+            }
+            else {
+                pic.style = 'background-image:url("images/placeholder-wide.png"); background-size:cover; background-position:center;';
+            }
+            banner.appendChild(pic);
+            var bannerInfo = document.createElement("div");
+            bannerInfo.className = "resto-banner-info";
+            banner.appendChild(bannerInfo);
+            var bannerName = document.createElement("div");
+            bannerName.className = "resto-name";
+            bannerName.innerHTML = currentRestoJSON.result.restoName;
+            bannerInfo.appendChild(bannerName);
+            var bannerAdd = document.createElement("div");
+            bannerAdd.className = "resto-address";
+            bannerAdd.innerHTML = currentRestoJSON.result.restoLoc;
+            bannerInfo.appendChild(bannerAdd);
         }
     };
-  
 
-};
+    // Ambil data menu
+    var xmlhttpX;
+    if (window.XMLHttpRequest) {
+        xmlhttpX = new XMLHttpRequest();
+    } else {
+        xmlhttpX = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttpX.open("GET", "https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGNY6fi2rBthYV_RuqUvVA7X1z/dev?route=getMenu&id=" + params.id, true);
+    xmlhttpX.send();
+    xmlhttpX.onreadystatechange = function () {
+        if (this.readyState === 4 && this.status === 200) {
+            var currentMenuJSON = JSON.parse(this.response);
+            // ambil id menu
+            var formMenu = document.getElementById("orderForm");
+            var currentMenuJSONRes = currentMenuJSON.result
+            menu_count = currentMenuJSONRes.length;
+            for (var menu in currentMenuJSONRes) {
+                var menucard = document.createElement("div");
+                menucard.className = "menu-card-small";
+                formMenu.appendChild(menucard);
+                var menupic = document.createElement("div");
+                menupic.className = "menu-pic";
+                if (currentMenuJSONRes[menu].picture !== '') {
+                    menupic.style = 'background-image:url("' + currentMenuJSONRes[menu].picture + '"); background-size:cover; background-position:center;';
+                }
+                else {
+                    menupic.style = 'background-image:url("images/placeholder.png"); background-size:cover; background-position:center;';
+                }
+                menucard.appendChild(menupic);
+                var menuname = document.createElement("div");
+                menuname.className = "menu-name";
+                menuname.innerHTML = currentMenuJSONRes[menu].nama;
+                menucard.appendChild(menuname);
+                var menuprice = document.createElement("div");
+                menuprice.className = "menu-price";
+                menuprice.id = "price-" + currentMenuJSONRes[menu].nama;
+                menuprice.innerHTML = currentMenuJSONRes[menu].harga;
+                menucard.appendChild(menuprice);
+                var menuquantity = document.createElement("div");
+                menuquantity.className = "menu-quantity";
+                menucard.appendChild(menuquantity);
+                var btnmin = document.createElement("button");
+                btnmin.className = "qty-button-min qty-button";
+                btnmin.type = "button";
+                btnmin.innerHTML = "-";
+                btnmin.id = "min-" + currentMenuJSONRes[menu].nama;
+                menuquantity.appendChild(btnmin);
+                var inp = document.createElement("input");
+                inp.className = "qty-menu";
+                inp.name = currentMenuJSONRes[menu].nama;
+                inp.type = "text";
+                inp.value = 0;
+                inp.id = "qty-" + currentMenuJSONRes[menu].nama;
+                menuquantity.appendChild(inp);
+                var btnplus = document.createElement("button");
+                btnplus.className = "qty-button-plus qty-button";
+                btnplus.type = "button";
+                btnplus.innerHTML = "+";
+                btnplus.id = "plus-" + currentMenuJSONRes[menu].nama;
+                menuquantity.appendChild(btnplus);
+                btnplus.addEventListener("click", plus);
+                btnmin.addEventListener("click", minus);
+            }
+            updateLength();
+        }
+        //button = document.getElementsByClassName('qty-button');
+        buttonPlus = document.getElementsByClassName('qty-button-plus');
+        field = document.getElementsByClassName('qty-menu');
+        for (i = 0; i < field.length; i++) {
+            field[i].addEventListener('change', calculateSum);
+        }
+    };
+
+    getLocation();
+
+    document.getElementById("notification-confirm").addEventListener("click", function (event) {
+        if (event.target.className === "notification") {
+            event.target.style = "display:none";
+        }
+    });
 
 </script>
 </body>

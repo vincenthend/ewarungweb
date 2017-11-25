@@ -13,6 +13,7 @@
     <meta name="msapplication-navbutton-color" content="#444444">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="msapplication-starturl" content="/">
+    <meta name="viewport" content="width=device-width">
     <link rel="icon" type="image/png" sizes="256x256" href="favicon.png">
     <link rel="apple-touch-icon" type="image/png" sizes="256x256" href="favicon.png">
 </head>
@@ -32,8 +33,8 @@
                 <div class="order-label">Pesanan</div>
             </div>
             <div id="list-pesanan">
-                </div>
-            
+            </div>
+
             <div class="order-location">
                 <div class="order-label">Lokasi Pengantaran</div>
                 <div class="order-content"></div>
@@ -57,91 +58,161 @@
 
 </div>
 <script>
-    var map;
-    var marker; 
+    /**
+     * Declare Functions
+     */
+    function getDirection(res) {
+        var destination = new google.maps.LatLng(lati, longi);
+        var start = new google.maps.LatLng(res.warung_latitude, res.warung_longitude);
+        calcRoute(start, destination)
+    }
+
+    function calcRoute(start, destination) {
+        var request = {
+            origin: start,
+            destination: destination,
+            travelMode: 'DRIVING'
+        };
+
+        directionsService.route(request, function (response, status) {
+            if (status === 'OK') {
+                directionsDisplay.setDirections(response);
+                // Log Directions
+                if (window.XMLHttpRequest) {
+                    xmlhttp = new XMLHttpRequest();
+                } else {
+                    xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+                }
+                var route = JSON.stringify(response);
+                var parameter = "route=setOrderRoute&id=" + params.id + "&dir=" + route;
+                xmlhttp.open("POST", "https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGNY6fi2rBthYV_RuqUvVA7X1z/dev");
+                xmlhttp.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+                xmlhttp.send(parameter);
+            }
+        });
+    }
+
     function initMap() {
-        var uluru = {lat: 0, lng: 0};
+        directionsService = new google.maps.DirectionsService();
+        directionsDisplay = new google.maps.DirectionsRenderer({
+            suppressMarkers: true,
+            polylineOptions: {
+                strokeColor: "#239c60",
+                strokeOpacity: 0.8,
+                strokeWeight: 4
+            }
+        });
+        var myLoc = {lat: lati, lng: longi};
         map = new google.maps.Map(document.getElementById('map'), {
             zoom: 15,
-            center: uluru
+            center: myLoc,
+            disableDefaultUI: true,
+            clickableIcons: false
         });
-        marker = new google.maps.Marker({
-    position: uluru,
-    map: map,
-    title: 'Your Loc'
-  });
+        directionsDisplay.setMap(map);
     }
 
     function getSearchParameters() {
         var prmstr = window.location.search.substr(1);
-        return prmstr != null && prmstr != "" ? transformToAssocArray(prmstr) : {};
+        return prmstr !== null && prmstr !== "" ? transformToAssocArray(prmstr) : {};
     }
 
-    function transformToAssocArray( prmstr ) {
+    function transformToAssocArray(prmstr) {
         var params = {};
         var prmarr = prmstr.split("&");
-        for ( var i = 0; i < prmarr.length; i++) {
+        for (var i = 0; i < prmarr.length; i++) {
             var tmparr = prmarr[i].split("=");
             params[tmparr[0]] = tmparr[1];
         }
         return params;
     }
 
-    var params = getSearchParameters();
-
     function submitConfirm() {
         var xmlhttpY;
-    if (window.XMLHttpRequest){
-        xmlhttpY = new XMLHttpRequest();
-    } else {
-        xmlhttpY = new ActiveXObject("Microsoft.XMLHTTP");
-    }
-    xmlhttpY.open("GET","https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGNY6fi2rBthYV_RuqUvVA7X1z/dev?route=orderDelivered&id=" + params.id,true);
-    xmlhttpY.send();
-    location.reload();
+        if (window.XMLHttpRequest) {
+            xmlhttpY = new XMLHttpRequest();
+        } else {
+            xmlhttpY = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttpY.open("GET", "https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGNY6fi2rBthYV_RuqUvVA7X1z/dev?route=orderDelivered&id=" + params.id, true);
+        xmlhttpY.send();
+        location.reload();
     }
 
+    // Variable Declarations
+
+    var map;
+    var markerDelivery;
+    var markerWarung;
+    var params = getSearchParameters();
+    var directionsService;
+    var directionsDisplay;
+
     var xmlhttp;
-    if (window.XMLHttpRequest){
+    lati = 0;
+    longi = 0;
+    if (window.XMLHttpRequest) {
         xmlhttp = new XMLHttpRequest();
     } else {
         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
-    xmlhttp.open("GET","https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGNY6fi2rBthYV_RuqUvVA7X1z/dev?route=getOrder&id=" + params.id,true);
+    var url = "https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGNY6fi2rBthYV_RuqUvVA7X1z/dev";
+    xmlhttp.open("GET", url + "?route=getOrder&id=" + params.id, true);
     xmlhttp.send();
     xmlhttp.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200){
+        if (this.readyState === 4 && this.status === 200) {
             var currentOrderJSON = JSON.parse(this.response);
             var res = currentOrderJSON.result;
-            
+
             document.getElementsByClassName("total-number")[0].innerHTML = res.total;
 
             var listpesanan = document.getElementById("list-pesanan");
             var itemlist = res.item_ordered;
-            for(var i in itemlist){
+            for (var i in itemlist) {
                 var orderitem = document.createElement("div");
                 orderitem.className = "order-item";
                 listpesanan.appendChild(orderitem);
                 var iname = document.createElement("div");
-                iname.className="item-name";
-                iname.innerHTML=itemlist[i].item_name;
+                iname.className = "item-name";
+                iname.innerHTML = itemlist[i].item_name;
                 orderitem.appendChild(iname);
                 var iqty = document.createElement("div");
-                iqty.className="item-name";
-                iqty.innerHTML=itemlist[i].item_qty;
-                orderitem.appendChild(iqty);                
+                iqty.className = "item-qty";
+                iqty.innerHTML = itemlist[i].item_qty;
+                orderitem.appendChild(iqty);
             }
+
+            console.log(res);
             lati = res.delivery_latitude;
             longi = res.delivery_longitude;
-            map.setCenter(new google.maps.LatLng( lati, longi ) );
-            marker.setPosition(new google.maps.LatLng( lati, longi ) );
+            map.setCenter(new google.maps.LatLng(lati, longi));
+            if (res.route !== '') {
+                directionsDisplay.setDirections(JSON.parse(res.route));
+            }
+            else {
+                getDirection(res);
+            }
+            markerDelivery = new google.maps.Marker({
+                map: map,
+                position: {lat: lati, lng: longi},
+                icon: "images/marker-my.png"
+            });
+            markerWarung = new google.maps.Marker({
+                map: map,
+                position: {lat: res.warung_latitude, lng: res.warung_longitude},
+                icon: "images/marker-warung.png"
+            });
+
             document.getElementsByClassName("order-content")[0].innerHTML = res.delivery_location;
-            document.getElementsByClassName("order-cancel")[0].onclick = function() {submitConfirm(params.id);}
+            document.getElementsByClassName("order-cancel")[0].onclick = function () {
+                submitConfirm(params.id);
+            }
         }
     };
 
 </script>
-<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtrJrATfjBw3tNZm-o9xZqBciFBBBSrUc&callback=initMap"></script>
+<script async defer
+        src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCtrJrATfjBw3tNZm-o9xZqBciFBBBSrUc&callback=initMap"></script>
 
 </body>
 </html>
