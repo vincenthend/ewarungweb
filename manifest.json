@@ -1,6 +1,5 @@
 {
-  "name": " ",
-  "short_name": " ",
+  "name": "EWarung",
   "description": "Provides easy access to your nearest warung",
   "lang": "id",
   "start_url": "/ewarungweb",
