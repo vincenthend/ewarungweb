@@ -4,6 +4,17 @@
     <meta charset="UTF-8">
     <title>E-Warung</title>
     <link rel="stylesheet" type="text/css" href="css/styles.css">
+    <link rel="manifest" href="manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="EWarung">
+    <meta name="apple-mobile-web-app-title" content="EWarung">
+    <meta name="theme-color" content="#444444">
+    <meta name="msapplication-navbutton-color" content="#444444">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="msapplication-starturl" content="/">
+    <link rel="icon" type="image/png" sizes="256x256" href="favicon.png">
+    <link rel="apple-touch-icon" type="image/png" sizes="256x256" href="favicon.png">
 </head>
 <body>
 <div class="container">
@@ -144,6 +155,12 @@ xmlhttp.onreadystatechange = function () {
         var banner = document.getElementsByClassName("resto-banner")[0];
         var pic = document.createElement("div");
         pic.className = "resto-banner-pic";
+        if(currentRestoJSON.result.restoPic !== ''){
+            pic.style = 'background-image:url("'+currentRestoJSON.result.restoPic +'"); background-size:cover; background-position:center;';
+        }
+        else{
+            pic.style = 'background-image:url("images/placeholder-wide.png"); background-size:contain; background-position:center;';
+        }
         banner.appendChild(pic);
         var bannerInfo = document.createElement("div");
         bannerInfo.className = "resto-banner-info";
@@ -170,7 +187,6 @@ xmlhttpX.open("GET","https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFG
 xmlhttpX.send();
 xmlhttpX.onreadystatechange = function () {
     if (this.readyState === 4 && this.status === 200){
-        console.log(this.response);
         var currentMenuJSON = JSON.parse(this.response);
         // ambil id menu
         var formMenu = document.getElementById("orderForm");
@@ -182,6 +198,12 @@ xmlhttpX.onreadystatechange = function () {
             formMenu.appendChild(menucard);
             var menupic = document.createElement("div");
             menupic.className = "menu-pic";
+            if(currentMenuJSONRes[menu].restoPic !== ''){
+                menupic.style = 'background-image:url("'+currentMenuJSONRes[menu].restoPic+'"); background-size:cover; background-position:center;';
+            }
+            else{
+                menupic.style = 'background-image:url("images/placeholder.png"); background-size:contain; background-position:center;';
+            }
             menucard.appendChild(menupic);
             var menuname = document.createElement("div");
             menuname.className = "menu-name";
@@ -196,7 +218,7 @@ xmlhttpX.onreadystatechange = function () {
             menuquantity.className = "menu-quantity";
             menucard.appendChild(menuquantity);
             var btnmin = document.createElement("button");
-            btnmin.className = "qty-button-min";
+            btnmin.className = "qty-button-min qty-button";
             btnmin.type="button";
             btnmin.innerHTML = "-";
             btnmin.id="min-"+currentMenuJSONRes[menu].nama;
@@ -209,11 +231,10 @@ xmlhttpX.onreadystatechange = function () {
             inp.id = "qty-"+currentMenuJSONRes[menu].nama;
             menuquantity.appendChild(inp);
             var btnplus = document.createElement("button");
-            btnplus.className = "qty-button-plus";
+            btnplus.className = "qty-button-plus qty-button";
             btnplus.type="button";
             btnplus.innerHTML = "+";
             btnplus.id = "plus-"+currentMenuJSONRes[menu].nama;
-            console.log(menu);
             btnplus.onclick = function() {addVal(menu)};
             menuquantity.appendChild(btnplus);
             btnplus.addEventListener("click",plus);
@@ -228,8 +249,6 @@ xmlhttpX.onreadystatechange = function () {
         field[i].addEventListener('change', calculateSum);
     }
 };
-
-
 
 function updateLength(){
 	var elm = document.getElementsByClassName("block-adder")[0];
@@ -252,7 +271,6 @@ function calculateSum() {
     document.getElementsByClassName("total-number")[0].innerHTML = sum;
     document.getElementById("am-pesanan").innerHTML = sum;
     document.getElementById("am-total").innerHTML = sum + 3000;
-	console.log("asd");
     // push ke json
   }
   return sum;
@@ -273,13 +291,6 @@ function plus(){
  	el.value = parseInt(el.value)- 1;
      calculateSum();
  }
-
-
-function addVal(j){
-    //var field = document.getElementsByClassName('qty-menu')[i];
-    //field.value = field.value + 1;
-    console.log(j);
-}
 
 var retval = {};
 

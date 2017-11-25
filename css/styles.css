@@ -1,3 +1,5 @@
+/*
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=yes">*/
 @font-face {
     font-family: "WinterBrush";
     src: url("../fonts/Winter Brush.otf");
@@ -26,7 +28,7 @@ body {
     margin: 0;
     background-color: #e6e6e6;
     font-family: "Source Code Pro", sans-serif;
-    font-size: 20pt;
+    font-size: 1rem;
     width: 100%;
 }
 
@@ -40,8 +42,8 @@ body {
     color: #FFF;
     font-family: "WinterBrush", serif;
     text-align: center;
-    font-size: 40pt;
-    padding: 3% 0;
+    font-size: 4rem;
+    padding: 2% 0;
     position: fixed;
     width: 100%;
     z-index: 6;
@@ -70,13 +72,13 @@ body {
 
 .searchbox {
     width: 100%;
-    height: 40px;
+    height: 3rem;
     border-radius: 20px;
     border: 1px solid #646464;
     padding: 0px 20px;
     box-sizing: border-box;
 
-    font-size: 14pt;
+    font-size: 1.5rem;
 }
 
 .content-label:first-child {
@@ -86,6 +88,7 @@ body {
 .content-label {
     color: #646464;
     margin-top: 5%;
+    font-size:2rem;
 }
 
 div[class*=resto-card-], div[class*=order-card] {
@@ -121,10 +124,15 @@ div[class*=resto-card-], div[class*=order-card] {
 .resto-name, .menu-name {
     margin-top: 10px;
     font-family: "Source Code Bold";
+    font-size: 2rem;
+}
+
+.resto-address{
+    overflow-x: hidden;
 }
 
 .resto-address, .menu-price {
-    font-size: 16pt;
+    font-size: 1.5rem;
 }
 
 .menu-price:before{
@@ -133,8 +141,15 @@ div[class*=resto-card-], div[class*=order-card] {
 
 .resto-pic-wide, .resto-pic-small {
     width: 100%;
-    height: 200px;
     background-color: #23b574;
+}
+
+.resto-pic-small {
+    height:14rem;
+}
+
+.resto-pic-wide{
+    height: 17rem;
 }
 
 #nearest {
@@ -147,7 +162,10 @@ div[class*=resto-card-], div[class*=order-card] {
 }
 
 .resto-banner {
-    height: 25%;
+    background-color: #ffffff;
+    height:35%;
+    min-height: 35%;
+    margin-bottom:2%;
 }
 
 .resto-banner-pic {
@@ -157,7 +175,7 @@ div[class*=resto-card-], div[class*=order-card] {
 
 .resto-banner-info {
     background-color: #FFF;
-    height: 23%;
+    overflow: hidden;
     padding: 2% 2%;
 }
 
@@ -215,11 +233,15 @@ div[class*=resto-card-], div[class*=order-card] {
     width: 50%;
     height: 100%;
     text-align:center;
+    font-size:1.3rem;
 }
 
 .qty-button {
     transition-duration: 0.1s;
     padding: 0 5%;
+    font-size:1.5rem;
+    width:2rem;
+    box-sizing: border-box;
 }
 
 .qty-button:active {
@@ -266,18 +288,18 @@ div[class*=resto-card-], div[class*=order-card] {
 
 .order-total > .total-label {
     color: #646464;
-    font-size: 20pt;
+    font-size: 2rem;
     padding-left: 3%;
 }
 
 .order-total > .total-number {
     padding-left: 10%;
-    font-size: 40pt;
+    font-size: 3rem;
     color: #23b574;
 }
 
 .order-total > .total-number:before {
-    font-size: 40pt;
+    font-size: 3rem;
     content: "Rp ";
     color: #23b574;
 }
@@ -291,7 +313,8 @@ div[class*=resto-card-], div[class*=order-card] {
 
     background-color: #23b574;
     color: #FFFFFF;
-    font-size: 40px;
+    font-size: 2rem;
+    font-weight: bolder;
 }
 
 .order-total-sending {
@@ -565,7 +588,7 @@ a {
 
 .order-contact{
     font-family: "Source Code Bold";
-    font-size:40pt;
+    font-size:2rem;
 }
 
 .order-contact + .order-header{

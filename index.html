@@ -4,7 +4,17 @@
     <meta charset="UTF-8">
     <title>E-Warung</title>
     <link rel="stylesheet" type="text/css" href="css/styles.css">
-    
+    <link rel="manifest" href="manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="EWarung">
+    <meta name="apple-mobile-web-app-title" content="EWarung">
+    <meta name="theme-color" content="#444444">
+    <meta name="msapplication-navbutton-color" content="#444444">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="msapplication-starturl" content="/">
+    <link rel="icon" type="image/png" sizes="256x256" href="favicon.png">
+    <link rel="apple-touch-icon" type="image/png" sizes="256x256" href="favicon.png">
 </head>
 <body>
 <div class="container">
@@ -23,7 +33,7 @@
             <div class="content-box" id="nearest"></div>
             <div class="content-label">Recommended</div>
             <div class="content-box" id="recommended">
-                
+
             </div>
         </div>
     </div>
@@ -31,62 +41,85 @@
 <script type="text/javascript">
     // Fetch data from endpoint
     var xmlhttp;
-    if (window.XMLHttpRequest){
+    if (window.XMLHttpRequest) {
         xmlhttp = new XMLHttpRequest();
     } else {
         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
-    xmlhttp.open("GET","https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGNY6fi2rBthYV_RuqUvVA7X1z/dev?route=getWarung",true);
+    xmlhttp.open("GET", "https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGNY6fi2rBthYV_RuqUvVA7X1z/dev?route=getWarung", true);
     xmlhttp.send();
     xmlhttp.onreadystatechange = function () {
-        if (this.readyState === 4 && this.status === 200){/*
-                  var user = document.getElementById("username");
-                        var nama = document.createTextNode("Hi, " + this.response);
-                        user.appendChild(nama);
-                        console.log(this.response);*/
-                        var restoJSON = JSON.parse(this.response);
-                        var contentbox = document.getElementById("recommended");
-                        var res = restoJSON.result;
-                        for(var resto in res) {
-                            var linking = document.createElement("a");
-                            linking.href  = "menu.html?id=" + res[resto].restoId;
-                            var newnode = document.createElement("div");
-                            newnode.className = "resto-card-big";
-                            linking.appendChild(newnode);
-                            var rspic = document.createElement("div");
-                            rspic.className = "resto-pic-wide";
-                            newnode.appendChild(rspic);
-                            var rsname = document.createElement("div");
-                            rsname.className = "resto-name";
-                            rsname.innerHTML = res[resto].restoName;
-                            newnode.appendChild(rsname);
-                            var rsadd = document.createElement("div");
-                            rsadd.className = "resto-address";
-                            rsadd.innerHTML = res[resto].restoLoc
-                            newnode.appendChild(rsadd);
-                            document.getElementById("recommended").appendChild(linking);
-                        }
-                        for(var resto in res) {
-                            var linking = document.createElement("a");
-                            linking.href  = "menu.html?id=" + res[resto].restoId;
-                            var newnode = document.createElement("div");
-                            newnode.className = "resto-card-small";
-                            newnode.appendChild(linking);
-                            var rspic = document.createElement("div");
-                            rspic.className = "resto-pic-wide";
-                            linking.appendChild(rspic);
-                            var rsname = document.createElement("div");
-                            rsname.className = "resto-name";
-                            rsname.innerHTML = res[resto].restoName;
-                            linking.appendChild(rsname);
-                            var rsadd = document.createElement("div");
-                            rsadd.className = "resto-address";
-                            rsadd.innerHTML = res[resto].restoLoc
-                            linking.appendChild(rsadd);
-                            document.getElementById("nearest").appendChild(newnode);
-                        }
-                    }
-                };
+        if (this.readyState === 4 && this.status === 200) {
+            var restoJSON = JSON.parse(this.response);
+            var contentbox = document.getElementById("recommended");
+            var res = restoJSON.result;
+
+            /**
+             * Recommended Restaurant
+             */
+            // Sort by Rating
+
+            // Print
+            for (var resto in res) {
+                console.log(res[resto]);
+                var linking = document.createElement("a");
+                linking.href = "menu.html?id=" + res[resto].restoId;
+                var newnode = document.createElement("div");
+                newnode.className = "resto-card-big";
+                linking.appendChild(newnode);
+                var rspic = document.createElement("div");
+                rspic.className = "resto-pic-wide";
+                if(res[resto].restoPic !== ''){
+                    rspic.style = 'background-image:url("'+res[resto].restoPic+'"); background-size:cover; background-position:center;';
+                }
+                else{
+                    rspic.style = 'background-image:url("images/placeholder-wide.png"); background-size:contain; background-position:center;';
+                }
+                newnode.appendChild(rspic);
+                var rsname = document.createElement("div");
+                rsname.className = "resto-name";
+                rsname.innerHTML = res[resto].restoName;
+                newnode.appendChild(rsname);
+                var rsadd = document.createElement("div");
+                rsadd.className = "resto-address";
+                rsadd.innerHTML = res[resto].restoLoc
+                newnode.appendChild(rsadd);
+                document.getElementById("recommended").appendChild(linking);
+            }
+
+            /**
+             * Closest restaurant
+             */
+            // Sort by distance
+
+            // Print
+            for (resto in res) {
+                linking = document.createElement("a");
+                linking.href = "menu.html?id=" + res[resto].restoId;
+                newnode = document.createElement("div");
+                newnode.className = "resto-card-small";
+                newnode.appendChild(linking);
+                rspic = document.createElement("div");
+                rspic.className = "resto-pic-small";
+                if(res[resto].restoPic !== ''){
+                    rspic.style = 'background-image:url("'+res[resto].restoPic+'"); background-size:cover; background-position:center;';
+                }
+                else{
+                    rspic.style = 'background-image:url("images/placeholder.png"); background-size:contain; background-position:center;';
+                }
+                linking.appendChild(rspic);
+                rsname = document.createElement("div");
+                rsname.className = "resto-name";
+                rsname.innerHTML = res[resto].restoName;
+                linking.appendChild(rsname);
+                rsadd = document.createElement("div");
+                rsadd.className = "resto-address";
+                rsadd.innerHTML = res[resto].restoLoc.substring(0,24);
+                linking.appendChild(rsadd);
+                document.getElementById("nearest").appendChild(newnode);
+            }
+        }
+    };
 </script>
 </body>
 </html>

@@ -4,7 +4,17 @@
     <meta charset="UTF-8">
     <title>E-Warung</title>
     <link rel="stylesheet" type="text/css" href="css/styles.css">
-
+    <link rel="manifest" href="manifest.json">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="EWarung">
+    <meta name="apple-mobile-web-app-title" content="EWarung">
+    <meta name="theme-color" content="#444444">
+    <meta name="msapplication-navbutton-color" content="#444444">
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+    <meta name="msapplication-starturl" content="/">
+    <link rel="icon" type="image/png" sizes="256x256" href="favicon.png">
+    <link rel="apple-touch-icon" type="image/png" sizes="256x256" href="favicon.png">
 </head>
 <body>
 <div class="container">
@@ -20,41 +30,43 @@
         <div class="card-content">
             <div class="content-label">Order Received</div>
             <div class="content-box">
-                
+
             </div>
         </div>
     </div>
 </div>
 
 <script type="text/javascript">
-function getSearchParameters() {
-var prmstr = window.location.search.substr(1);
-return prmstr != null && prmstr != "" ? transformToAssocArray(prmstr) : {};
-}
-
-function transformToAssocArray( prmstr ) {
-var params = {};
-var prmarr = prmstr.split("&");
-for ( var i = 0; i < prmarr.length; i++) {
-    var tmparr = prmarr[i].split("=");
-    params[tmparr[0]] = tmparr[1];
-}
-return params;
-}
-var params = getSearchParameters();
-
-function submitReady(id){
-    var xmlhttp;
-    if (window.XMLHttpRequest) {
-        xmlhttp = new XMLHttpRequest();
-    } else {
-        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    function getSearchParameters() {
+        var prmstr = window.location.search.substr(1);
+        return prmstr != null && prmstr != "" ? transformToAssocArray(prmstr) : {};
     }
-    xmlhttp.open("GET","https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGNY6fi2rBthYV_RuqUvVA7X1z/dev?route=orderReady&id=" + id,true);
-    xmlhttp.send();
-    console.log(id);
-    location.reload();
-}
+
+    function transformToAssocArray(prmstr) {
+        var params = {};
+        var prmarr = prmstr.split("&");
+        for (var i = 0; i < prmarr.length; i++) {
+            var tmparr = prmarr[i].split("=");
+            params[tmparr[0]] = tmparr[1];
+        }
+        return params;
+    }
+
+    var params = getSearchParameters();
+
+    function submitReady(id) {
+        var xmlhttp;
+        if (window.XMLHttpRequest) {
+            xmlhttp = new XMLHttpRequest();
+        } else {
+            xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+        }
+        xmlhttp.open("GET", "https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGNY6fi2rBthYV_RuqUvVA7X1z/dev?route=orderReady&id=" + id, true);
+        xmlhttp.send();
+        console.log(id);
+        location.reload();
+    }
+
     // Fetch data from endpoint
     var xmlhttp;
     if (window.XMLHttpRequest) {
@@ -62,14 +74,14 @@ function submitReady(id){
     } else {
         xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
-    xmlhttp.open("GET","https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGNY6fi2rBthYV_RuqUvVA7X1z/dev?route=getWarungOrder&id=" + params.id,true);
+    xmlhttp.open("GET", "https://script.google.com/macros/s/AKfycbzfGm-nwmfVcwktmtFGNY6fi2rBthYV_RuqUvVA7X1z/dev?route=getWarungOrder&id=" + params.id, true);
     xmlhttp.send();
     xmlhttp.onreadystatechange = function () {
         if (this.readyState === 4 && this.status === 200) {
             var currentOrderJSON = JSON.parse(this.response);
             var res = currentOrderJSON.result;
             var contentBox = document.getElementsByClassName("content-box")[0];
-            for (var j in res){
+            for (var j in res) {
                 var ordercardbig = document.createElement("div");
                 ordercardbig.className = "order-card-big";
                 contentBox.appendChild(ordercardbig);
@@ -83,23 +95,25 @@ function submitReady(id){
                 var listpesanan = document.createElement("div");
                 ordercardbig.appendChild(listpesanan);
                 var itemlist = res[j].item_ordered;
-                for(var i in itemlist){
+                for (var i in itemlist) {
                     var orderitem = document.createElement("div");
                     orderitem.className = "order-item";
                     listpesanan.appendChild(orderitem);
                     var iname = document.createElement("div");
-                    iname.className="item-name";
-                    iname.innerHTML=itemlist[i].item_name;
+                    iname.className = "item-name";
+                    iname.innerHTML = itemlist[i].item_name;
                     orderitem.appendChild(iname);
                     var iqty = document.createElement("div");
-                    iqty.className="item-name";
-                    iqty.innerHTML=itemlist[i].item_qty;
-                    orderitem.appendChild(iqty);                
+                    iqty.className = "item-name";
+                    iqty.innerHTML = itemlist[i].item_qty;
+                    orderitem.appendChild(iqty);
                 }
                 var tombol = document.createElement("button");
                 tombol.type = "button";
                 tombol.className = "button-ready";
-                tombol.onclick = function() {submitReady(res[j].order_id);};
+                tombol.onclick = function () {
+                    submitReady(res[j].order_id);
+                };
                 tombol.innerHTML = "Order Ready";
                 ordercardbig.appendChild(tombol);
             }
