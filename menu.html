@@ -53,18 +53,24 @@
     </div>
 </div>
 
-
-<div class="notification" id="notification-confirm">
+<div class="notification" id="notification-alergen">
     <div class="notification-box">
         <div class="notification-section" id="alergen">
             <div class="notification-header">
-                Alergen
+                Alergen yang terkandung
             </div>
             <div class="notification-content" id="alergen-content">
                 
             </div>
         </div>
 
+        <button type="button" onClick="contAlergen()">Lanjutkan</button>
+    </div>
+</div>
+
+<div class="notification" id="notification-confirm">
+    <div class="notification-box">
+        
         <div class="notification-section" id="total">
             <div class="notification-header">
                 Total Pesanan
@@ -125,6 +131,11 @@
         console.log(idOrder);
         window.location.replace('order_sending.html?id=' + idOrder + '&lat=' + retval.delivery_lat + '&long=' + retval.delivery_long);
     }
+    function contAlergen() {
+        document.getElementById("notification-alergen").style = "display: hidden;";
+        document.getElementById("notification-confirm").style = "display: flex;";
+        
+    }
     function displayToken(id) {
         document.getElementById("notification-confirm").style = "display: hidden;";
         document.getElementById("notification-token").style = "display: flex;";
@@ -159,6 +170,7 @@
             if (input.name && (input.value > 0)) {
                 data.push(input.id);
                 sum = sum + (input.value * (document.getElementById("price-" + input.name).innerHTML));
+                if (document.getElementById("alergen-" + input.name) != null)
                 document.getElementById("alergen-" + input.name).style = "display:flex;";
             }
             
@@ -191,7 +203,13 @@
     }
     function showConfirm() {
         calculateSum();
-        document.getElementById("notification-confirm").style = "display: flex;";
+        //console.log((document.getElementById("alergen-content").innerHTML.trim()));
+        if ((document.getElementById("alergen-content").innerHTML.trim()) == ""){
+            document.getElementById("notification-confirm").style = "display: flex;";
+            console.log("haha");
+        } else {
+            document.getElementById("notification-alergen").style = "display: flex;";
+        }
     }
     function getLocation() {
         if (navigator.geolocation) {

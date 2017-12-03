@@ -547,6 +547,10 @@ hr {
     display: none;
 }
 
+#notification-alergen {
+    display: none;
+}
+
 a {
     color: #000000;
     text-decoration: none;
