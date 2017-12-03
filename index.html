@@ -40,6 +40,26 @@
     </div>
 </div>
 <script type="text/javascript">
+    // FUNCTION
+    function getLocation() {
+        if (navigator.geolocation) {
+            navigator.geolocation.getCurrentPosition(showPosition, null, {
+                enableHighAccuracy: true,
+                timeout: 5000,
+                maximumAge: 0
+            });
+        } else {
+            x.innerHTML = "Geolocation is not supported by this browser.";
+        }
+    }
+    function showPosition(position) {
+        retval.delivery_lat = position.coords.latitude;
+        retval.delivery_long = position.coords.longitude;
+    }
+    var retval = {};
+    getLocation();
+
+
     // Fetch data from endpoint
     var xmlhttp;
     if (window.XMLHttpRequest) {
@@ -91,7 +111,24 @@
              * Closest restaurant
              */
             // Sort by distance
+            
+            for (resto in res) {
+                // euclidean dist
+                var lat = Math.pow(retval.delivery_lat - res[resto].resto_latitude, 2);
+                var long = Math.pow(retval.delivery_long - res[resto].resto_longitude, 2);
+                res[resto].eucd = Math.sqrt(lat + long);
+                //console.log(retval.delivery_lat);
+            }
+            console.log(JSON.stringify(res));
+            res.sort(function(a,b){
+                if (a.eucd < b.eucd){
+                    return -1;
+                }
+                else {
+                    return 1;
+                }
 
+            });
             // Print
             for (resto in res) {
                 linking = document.createElement("a");
