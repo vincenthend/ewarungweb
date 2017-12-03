@@ -60,8 +60,8 @@
             <div class="notification-header">
                 Alergen
             </div>
-            <div class="notification-content">
-                Mengandung telur
+            <div class="notification-content" id="alergen-content">
+                
             </div>
         </div>
 
@@ -152,21 +152,28 @@
     }
     function calculateSum() {
         var sum = 0;
+        var data = [];
         for (var i = 0, ii = form.length; i < ii; ++i) {
-            var data = {};
+            
             var input = form[i];
             if (input.name && (input.value > 0)) {
+                data.push(input.id);
                 sum = sum + (input.value * (document.getElementById("price-" + input.name).innerHTML));
+                document.getElementById("alergen-" + input.name).style = "display:flex;";
             }
-            document.getElementsByClassName("total-number")[0].innerHTML = sum;
-            document.getElementById("am-pesanan").innerHTML = sum;
-            document.getElementById("am-total").innerHTML = sum + 3000;
+            
+            
             // push ke json
         }
+        document.getElementsByClassName("total-number")[0].innerHTML = sum;
+            document.getElementById("am-pesanan").innerHTML = sum;
+            document.getElementById("am-total").innerHTML = sum + 3000;
+        console.log(JSON.stringify(data));
         return sum;
     }
     function plus() {
         var id = event.target.id.split("-")[1];
+        console.log((event.target.id.split("-")[2]) == undefined);
         var el = document.getElementById("qty-" + id);
 
         el.value = parseInt(el.value) + 1;
@@ -294,6 +301,7 @@
             var currentMenuJSON = JSON.parse(this.response);
             // ambil id menu
             var formMenu = document.getElementById("orderForm");
+            var alergencontent = document.getElementById("alergen-content");
             var currentMenuJSONRes = currentMenuJSON.result
             menu_count = currentMenuJSONRes.length;
             for (var menu in currentMenuJSONRes) {
@@ -342,15 +350,21 @@
                 menuquantity.appendChild(btnplus);
                 btnplus.addEventListener("click", plus);
                 btnmin.addEventListener("click", minus);
+                //if (currentMenuJSONRes[menu].komposisi)
+                if ((currentMenuJSONRes[menu].komposisi) != "") {
+                    var addAlergen = document.createElement("div");
+                    addAlergen.id = "alergen-" + currentMenuJSONRes[menu].nama;
+                    addAlergen.innerHTML = currentMenuJSONRes[menu].komposisi;
+                    addAlergen.style = "display:none;";
+                    alergencontent.appendChild(addAlergen);
+                }
             }
             updateLength();
         }
         //button = document.getElementsByClassName('qty-button');
         buttonPlus = document.getElementsByClassName('qty-button-plus');
         field = document.getElementsByClassName('qty-menu');
-        for (i = 0; i < field.length; i++) {
-            field[i].addEventListener('change', calculateSum);
-        }
+
     };
 
     getLocation();

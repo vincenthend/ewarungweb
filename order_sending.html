@@ -161,6 +161,7 @@
             if (this.readyState === 4 && this.status === 200) {
                 var currentOrderJSON = JSON.parse(this.response);
                 var res = currentOrderJSON.result;
+                console.log(this.response);
                 lati = res.delivery_latitude;
                 longi = res.delivery_longitude;
                 markerDelivery = new google.maps.Marker({
